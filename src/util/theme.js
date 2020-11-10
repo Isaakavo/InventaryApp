@@ -28,9 +28,15 @@ const theme = {
     textField: {
       margin: '10px auto 10px auto',
     },
+    headerRow: {
+      fontWeight: 'bold',
+    },
     button: {
       marginTop: 20,
       position: 'relative',
+    },
+    progress: {
+      position: 'absolute',
     },
   },
 };

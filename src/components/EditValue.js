@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import firebase from '../firebaseConfig';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
 //MUI
@@ -12,14 +11,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 //Icon
 import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from '@material-ui/icons/Close';
+//Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { updateData } from '../redux/actions/dataActions';
 
 const initialValue = {
   clave: '',
   equipo: '',
   caracteristicas: '',
   marca: '',
-  cantidad: 9,
+  cantidad: 0,
   userHandle: '',
   ubicacion: '',
   observaciones: '',
@@ -34,7 +35,10 @@ const styles = (theme) => ({
 const EditValue = ({ classes, row }) => {
   const [open, setOpen] = useState(false);
   const [newValue, setNewValue] = useState(initialValue);
-  const [updated, setUpdated] = useState(false);
+
+  const loading = useSelector((state) => state.UI.loading);
+
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
     setOpen(true);
@@ -49,17 +53,8 @@ const EditValue = ({ classes, row }) => {
     });
   };
   const handleSubmit = () => {
-    updateData();
+    dispatch(updateData(newValue, row.id));
     handleClose();
-  };
-
-  const updateData = () => {
-    firebase
-      .collection('inventario')
-      .doc(row.id)
-      .update(newValue)
-      .then(setUpdated(true))
-      .catch((err) => console.log('Nel no se subio'));
   };
 
   useEffect(() => {
@@ -134,9 +129,39 @@ const EditValue = ({ classes, row }) => {
               name='cantidad'
               type='number'
               label='Cantidad'
-              placeholder='A short bio about yourself'
+              placeholder='Cantidad'
               className={classes.textField}
               value={newValue.cantidad}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              name='empresa'
+              type='text'
+              label='Empresa'
+              placeholder='Empresa'
+              className={classes.textField}
+              value={newValue.empresa}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              name='ubicacion'
+              type='text'
+              label='Ubicación'
+              placeholder='Ubicación'
+              className={classes.textField}
+              value={newValue.ubicacion}
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              name='observaciones'
+              type='text'
+              label='Observaciones'
+              placeholder='Observaciones'
+              className={classes.textField}
+              value={newValue.observaciones}
               onChange={handleChange}
               fullWidth
             />
@@ -148,6 +173,9 @@ const EditValue = ({ classes, row }) => {
           </Button>
           <Button onClick={handleSubmit} color='primary'>
             Submit
+            {loading && (
+              <CircularProgress size={30} className={classes.progressSpiner} />
+            )}
           </Button>
         </DialogActions>
       </Dialog>

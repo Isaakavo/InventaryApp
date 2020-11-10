@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import firebase from '../firebaseConfig';
 import Row from './Row';
 import { header } from '../util/header';
 
@@ -12,9 +11,17 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+//Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { getData } from '../redux/actions/dataActions';
 const styles = (theme) => ({
   ...theme.spreadThis,
+  spinnerDiv: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -28,25 +35,23 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const Table = ({ classes }) => {
-  const [data, setData] = useState([]);
+  const dataReducer = useSelector((state) => state.data);
+  const { data, loading } = dataReducer;
+  const dispatch = useDispatch();
 
-  const getDataBase = () => {
-    firebase
-      .collection('inventario')
-      .orderBy('numero')
-      .get()
-      .then((snapshot) => {
-        const elements = [];
-        snapshot.forEach((doc) => {
-          elements.push({ id: doc.id, ...doc.data() });
-        });
-        setData(elements);
-      })
-      .catch((err) => console.log(err));
-  };
+  const displayingRow = !loading ? (
+    data.map((row, index) => {
+      console.log(row);
+      return <Row key={index} row={row} header={header} />;
+    })
+  ) : (
+    <TableRow>
+      <CircularProgress size={100} thickness={2} className={classes.progress} />
+    </TableRow>
+  );
 
   useEffect(() => {
-    getDataBase();
+    dispatch(getData());
   }, []);
   console.log(data);
   return (
@@ -60,9 +65,9 @@ const Table = ({ classes }) => {
           <TableHead className={classes.primary}>
             <TableRow>
               <StyledTableCell />
-              {header.map((head) => {
+              {header.map((head, index) => {
                 return (
-                  <StyledTableCell key={head.id} className={classes.table}>
+                  <StyledTableCell key={index} className={classes.table}>
                     {head.label}
                   </StyledTableCell>
                 );
@@ -70,12 +75,7 @@ const Table = ({ classes }) => {
               <StyledTableCell />
             </TableRow>
           </TableHead>
-          <TableBody>
-            {data.map((row) => {
-              console.log(row);
-              return <Row row={row} header={header} />;
-            })}
-          </TableBody>
+          <TableBody>{displayingRow}</TableBody>
         </TableMUI>
       </TableContainer>
     </Paper>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Editvalue from './EditValue';
+import withStyles from '@material-ui/core/styles/withStyles';
+import dayjs from 'dayjs';
+import { innerHeader } from '../util/header';
 //MUI
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
@@ -13,21 +16,32 @@ import Typography from '@material-ui/core/Typography';
 //Icon
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+//Redux
+// import { useDispatch, useSelector } from 'react-redux';
 
-const innerHeader = [
-  { id: 'empresa', label: 'Empresa' },
-  { id: 'ubicacion', label: 'Ubicación' },
-  { id: 'observaciones', label: 'Observaciones' },
-];
-const Row = ({ row, header }) => {
+const styles = (theme) => ({
+  ...theme.spreadThis,
+});
+
+const Row = ({ row, header, classes }) => {
   const [open, setOpen] = useState(false);
+  // const date = dayjs.extend(row.fechaIngreso);
 
   const tableHead = innerHeader.map((head) => {
-    return <TableCell>{head.label}</TableCell>;
+    return (
+      <TableCell key={head.id} className={classes.headerRow}>
+        {head.label}
+      </TableCell>
+    );
   });
-  const tableBody = innerHeader.map((head) => {
-    const value = row[head.id];
-    return <TableCell>{value}</TableCell>;
+  const tableBody = innerHeader.map((head, index) => {
+    let value;
+    if (head.id === 'fechaIngreso') {
+      value = dayjs(row[head.id]).format('DD/MM/YYYY');
+    } else {
+      value = row[head.id];
+    }
+    return <TableCell key={index}>{value}</TableCell>;
   });
   return (
     <>
@@ -41,9 +55,9 @@ const Row = ({ row, header }) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        {header.map((head) => {
+        {header.map((head, index) => {
           const value = row[head.id];
-          return <TableCell key={value}>{value}</TableCell>;
+          return <TableCell key={index}>{value}</TableCell>;
         })}
         <TableCell>
           <Editvalue row={row} />
@@ -70,4 +84,4 @@ const Row = ({ row, header }) => {
   );
 };
 
-export default Row;
+export default withStyles(styles)(Row);
