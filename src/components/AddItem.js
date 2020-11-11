@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
+
 //MUI
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,11 +10,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
-//Icon
-import EditIcon from '@material-ui/icons/Edit';
+//Icons
+import AddIcon from '@material-ui/icons/Add';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { updateData } from '../redux/actions/dataActions';
+import { addData } from '../redux/actions/dataActions';
 
 const initialValue = {
   clave: '',
@@ -25,62 +26,53 @@ const initialValue = {
   ubicacion: '',
   observaciones: '',
   empresa: '',
+  fechaIngreso: '',
 };
 
 const styles = (theme) => ({
   ...theme.spreadThis,
+  buttonAdd: {
+    color: theme.palette.common.white,
+  },
 });
 
-const EditValue = ({ classes, row }) => {
+const AddItem = ({ classes }) => {
   const [open, setOpen] = useState(false);
-  const [newValue, setNewValue] = useState(initialValue);
+  const [newItem, setNewItem] = useState(initialValue);
 
-  const loading = useSelector((state) => state.UI.loading);
+  const loading = useSelector((state) => state.data.loading);
 
   const dispatch = useDispatch();
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleChange = (e) => {
-    setNewValue({
-      ...newValue,
+    setNewItem({
+      ...newItem,
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateData(newValue, row.id));
-    handleClose();
+    dispatch(addData(newItem));
+    setOpen(false);
   };
 
-  useEffect(() => {
-    setNewValue({
-      clave: row.clave ? row.clave : '',
-      equipo: row.equipo ? row.equipo : '',
-      caracteristicas: row.caracteristicas ? row.caracteristicas : '',
-      marca: row.marca ? row.marca : '',
-      cantidad: row.cantidad ? row.cantidad : '',
-      userHandle: row.userHandle ? row.userHandle : '',
-      ubicacion: row.ubicacion ? row.ubicacion : '',
-      observaciones: row.observaciones ? row.observaciones : '',
-      empresa: row.empresa ? row.empresa : '',
-    });
-  }, [row]);
   return (
     <>
       <MyButton
-        tip='editar'
-        onClick={() => handleOpen()}
-        btnClassName={classes.button}
+        tip='Agregar un nuevo elemento al inventario'
+        onClick={() => setOpen(true)}
+        btnClassName={classes.buttonAdd}
       >
-        <EditIcon color='primary' />
+        <AddIcon />
       </MyButton>
-      <Dialog open={open} onClose={() => handleClose()} fullWidth maxWidth='sm'>
-        <DialogTitle>Editar valores</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        fullWidth
+        maxWidth='md'
+      >
+        <DialogTitle>Agregar elementos</DialogTitle>
         <DialogContent>
           <form>
             <TextField
@@ -89,7 +81,7 @@ const EditValue = ({ classes, row }) => {
               label='Clave'
               placeholder='Clave del equipo'
               className={classes.textField}
-              value={newValue.clave}
+              value={newItem.clave}
               onChange={handleChange}
               fullWidth
             />
@@ -99,7 +91,7 @@ const EditValue = ({ classes, row }) => {
               label='Equipo'
               placeholder='Nombre del equipo'
               className={classes.textField}
-              value={newValue.equipo}
+              value={newItem.equipo}
               onChange={handleChange}
               fullWidth
             />
@@ -111,7 +103,7 @@ const EditValue = ({ classes, row }) => {
               rows='3'
               placeholder='catacteristicas'
               className={classes.textField}
-              value={newValue.caracteristicas}
+              value={newItem.caracteristicas}
               onChange={handleChange}
               fullWidth
             />
@@ -121,7 +113,7 @@ const EditValue = ({ classes, row }) => {
               label='marca'
               placeholder='Marca del equipo'
               className={classes.textField}
-              value={newValue.marca}
+              value={newItem.marca}
               onChange={handleChange}
               fullWidth
             />
@@ -131,7 +123,7 @@ const EditValue = ({ classes, row }) => {
               label='Cantidad'
               placeholder='Cantidad'
               className={classes.textField}
-              value={newValue.cantidad}
+              value={newItem.cantidad}
               onChange={handleChange}
               fullWidth
             />
@@ -141,7 +133,7 @@ const EditValue = ({ classes, row }) => {
               label='Empresa'
               placeholder='Empresa'
               className={classes.textField}
-              value={newValue.empresa}
+              value={newItem.empresa}
               onChange={handleChange}
               fullWidth
             />
@@ -151,7 +143,7 @@ const EditValue = ({ classes, row }) => {
               label='Ubicación'
               placeholder='Ubicación'
               className={classes.textField}
-              value={newValue.ubicacion}
+              value={newItem.ubicacion}
               onChange={handleChange}
               fullWidth
             />
@@ -161,14 +153,14 @@ const EditValue = ({ classes, row }) => {
               label='Observaciones'
               placeholder='Observaciones'
               className={classes.textField}
-              value={newValue.observaciones}
+              value={newItem.observaciones}
               onChange={handleChange}
               fullWidth
             />
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary'>
+          <Button onClick={() => setOpen(false)} color='primary'>
             Cancelar
           </Button>
           <Button
@@ -177,7 +169,7 @@ const EditValue = ({ classes, row }) => {
             variant='contained'
             disabled={loading}
           >
-            Actualizar
+            Subir
             {loading && (
               <CircularProgress size={30} className={classes.progressSpiner} />
             )}
@@ -188,4 +180,4 @@ const EditValue = ({ classes, row }) => {
   );
 };
 
-export default withStyles(styles)(EditValue);
+export default withStyles(styles)(AddItem);

@@ -1,8 +1,9 @@
-import { LOADING_DATA, SET_DATA } from '../types';
+import { ITEM_ADDED, LOADING_DATA, SET_DATA, CHANGE_DATABASE } from '../types';
 
 const initialState = {
   data: [],
   loading: false,
+  empresa: 'Espectro',
 };
 
 export default function (state = initialState, action) {
@@ -18,7 +19,17 @@ export default function (state = initialState, action) {
         data: action.payload,
         loading: false,
       };
-
+    case ITEM_ADDED:
+      return {
+        ...state,
+        data: [action.payload, ...state.data],
+        loading: false,
+      };
+    case CHANGE_DATABASE:
+      return {
+        ...state,
+        empresa: action.payload,
+      };
     default:
       return state;
   }

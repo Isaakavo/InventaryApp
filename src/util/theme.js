@@ -8,7 +8,8 @@ const theme = {
     },
     secondary: {
       light: '#ff6333',
-      main: '#ff3d00',
+      // main: '#ff3d00',
+      main: '#fff',
       dark: '#b22a00',
       contrastText: '#fff',
     },
@@ -37,6 +38,15 @@ const theme = {
     },
     progress: {
       position: 'absolute',
+    },
+    formControl: {
+      margin: 11,
+      minWidth: 120,
+      borderColor: '#fff',
+      color: '#fff',
+    },
+    selectEmpty: {
+      marginTop: 10,
     },
   },
 };

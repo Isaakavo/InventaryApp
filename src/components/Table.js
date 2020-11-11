@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Row from './Row';
 import { header } from '../util/header';
+import AddItem from './AddItem';
 
 // MUI
 import Paper from '@material-ui/core/Paper';
@@ -36,24 +37,20 @@ const StyledTableCell = withStyles((theme) => ({
 
 const Table = ({ classes }) => {
   const dataReducer = useSelector((state) => state.data);
-  const { data, loading } = dataReducer;
+  const { data, loading, empresa } = dataReducer;
   const dispatch = useDispatch();
 
   const displayingRow = !loading ? (
     data.map((row, index) => {
-      console.log(row);
       return <Row key={index} row={row} header={header} />;
     })
   ) : (
-    <TableRow>
-      <CircularProgress size={100} thickness={2} className={classes.progress} />
-    </TableRow>
+    <CircularProgress size={100} thickness={2} className={classes.progress} />
   );
 
   useEffect(() => {
-    dispatch(getData());
-  }, []);
-  console.log(data);
+    dispatch(getData(empresa));
+  }, [empresa]);
   return (
     <Paper className={classes.root}>
       <TableContainer>
@@ -72,7 +69,9 @@ const Table = ({ classes }) => {
                   </StyledTableCell>
                 );
               })}
-              <StyledTableCell />
+              <StyledTableCell>
+                <AddItem />
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>{displayingRow}</TableBody>
