@@ -5,6 +5,7 @@ import {
   LOADING_DATA,
   ITEM_ADDED,
   CHANGE_DATABASE,
+  SET_LASTNUM,
 } from '../types';
 import firebase from '../../firebaseConfig';
 
@@ -17,12 +18,18 @@ export const getData = (inventary) => (dispatch) => {
     .get()
     .then((res) => {
       const elements = [];
+      let lastIndex;
       res.forEach((doc) => {
         elements.push({ id: doc.id, ...doc.data() });
+        lastIndex = doc.data().numero;
       });
       dispatch({
         type: SET_DATA,
         payload: elements,
+      });
+      dispatch({
+        type: SET_LASTNUM,
+        payload: lastIndex,
       });
     })
     .catch((err) => {
@@ -47,10 +54,13 @@ export const updateData = (newData, id) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-export const addData = (newItem) => (dispatch) => {
+export const addData = (newItem, lastId) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   const date = new Date().toISOString();
+  console.log(date);
+  lastId++;
   const newItemToAdd = {
+    numero: lastId,
     clave: newItem.clave,
     equipo: newItem.equipo,
     caracteristicas: newItem.caracteristicas,
@@ -68,9 +78,15 @@ export const addData = (newItem) => (dispatch) => {
     .then((doc) => {
       const resData = newItem;
       resData.id = doc.id;
+      resData.numero = lastId;
+      resData.fechaIngreso = date;
       dispatch({
         type: ITEM_ADDED,
         payload: resData,
+      });
+      dispatch({
+        type: SET_LASTNUM,
+        payload: lastId,
       });
     })
     .catch((err) => console.error(err));

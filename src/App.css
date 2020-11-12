@@ -5,6 +5,7 @@ body {
     sans-serif;
   background-color: rgb(245, 245, 245);
   text-transform: capitalize;
+  font-size: large;
 }
 .container {
   margin: 80px auto 0 auto;

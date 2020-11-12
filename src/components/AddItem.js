@@ -16,7 +16,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { addData } from '../redux/actions/dataActions';
 
-const initialValue = {
+let initialValue = {
   clave: '',
   equipo: '',
   caracteristicas: '',
@@ -25,8 +25,8 @@ const initialValue = {
   userHandle: '',
   ubicacion: '',
   observaciones: '',
-  empresa: '',
   fechaIngreso: '',
+  empresa: '',
 };
 
 const styles = (theme) => ({
@@ -37,12 +37,15 @@ const styles = (theme) => ({
 });
 
 const AddItem = ({ classes }) => {
+  const { loading, empresa, ultimoId } = useSelector((state) => state.data);
+  const dispatch = useDispatch();
+  initialValue = {
+    ...initialValue,
+    empresa: empresa.toLowerCase(),
+  };
+
   const [open, setOpen] = useState(false);
   const [newItem, setNewItem] = useState(initialValue);
-
-  const loading = useSelector((state) => state.data.loading);
-
-  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setNewItem({
@@ -53,10 +56,10 @@ const AddItem = ({ classes }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addData(newItem));
+    dispatch(addData(newItem, ultimoId));
     setOpen(false);
+    setNewItem(initialValue);
   };
-
   return (
     <>
       <MyButton
@@ -133,7 +136,7 @@ const AddItem = ({ classes }) => {
               label='Empresa'
               placeholder='Empresa'
               className={classes.textField}
-              value={newItem.empresa}
+              value={empresa}
               onChange={handleChange}
               fullWidth
             />

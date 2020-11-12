@@ -8,3 +8,4 @@ export const STOP_LOADING_UI = 'STOP_LOADING_UI';
 export const SET_DATA = 'SET_DATA';
 export const ITEM_ADDED = 'ITEM_ADDED';
 export const CHANGE_DATABASE = 'CHANGE_DATABASE';
+export const SET_LASTNUM = 'SET_LASTNUM';
