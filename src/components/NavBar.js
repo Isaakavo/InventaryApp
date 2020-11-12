@@ -20,7 +20,7 @@ const styles = (theme) => ({
 });
 
 const NavBar = ({ classes }) => {
-  const [empresa, setEmpresa] = useState('Espectro');
+  const [empresa, setEmpresa] = useState('espectro');
 
   const dispatch = useDispatch();
 
@@ -38,9 +38,9 @@ const NavBar = ({ classes }) => {
         onChange={handleChange}
         className={classes.selectorColor}
       >
-        <MenuItem value={'Espectro'}>Espectro</MenuItem>
-        <MenuItem value={'Material sin empresa'}>Material sin empresa</MenuItem>
-        <MenuItem value={'Tainos'}>Tainos</MenuItem>
+        <MenuItem value={'espectro'}>Espectro</MenuItem>
+        <MenuItem value={'material sin empresa'}>Material sin empresa</MenuItem>
+        <MenuItem value={'tainos'}>Tainos</MenuItem>
       </Select>
       <FormHelperText className={classes.selectorColor}>
         Elegir inventario
