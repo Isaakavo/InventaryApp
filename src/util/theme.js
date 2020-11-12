@@ -40,7 +40,9 @@ const theme = {
       position: 'absolute',
     },
     formControl: {
-      margin: 11,
+      margin: '10px auto 10px 50px',
+      paddingTop: '15px',
+      paddingBottom: '5px',
       minWidth: 120,
       borderColor: '#fff',
       color: '#fff',
