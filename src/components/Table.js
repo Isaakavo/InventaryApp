@@ -12,7 +12,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import CircularProgress from '@material-ui/core/CircularProgress';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getData } from '../redux/actions/dataActions';
@@ -41,11 +40,17 @@ const Table = ({ classes }) => {
   const dispatch = useDispatch();
 
   const displayingRow = !loading ? (
-    data.map((row, index) => {
-      return <Row key={index} row={row} header={header} />;
-    })
+    <TableBody>
+      {data.map((row, index) => {
+        return <Row key={index} row={row} header={header} />;
+      })}
+    </TableBody>
   ) : (
-    <CircularProgress size={100} thickness={2} className={classes.progress} />
+    <TableBody>
+      <TableRow>
+        <TableCell>Cargando...</TableCell>
+      </TableRow>
+    </TableBody>
   );
 
   useEffect(() => {
@@ -74,7 +79,7 @@ const Table = ({ classes }) => {
               </StyledTableCell>
             </TableRow>
           </TableHead>
-          <TableBody>{displayingRow}</TableBody>
+          {displayingRow}
         </TableMUI>
       </TableContainer>
     </Paper>
