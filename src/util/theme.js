@@ -16,15 +16,17 @@ const theme = {
   },
   spreadThis: {
     root: {
-      width: '80%',
-
-      marginTop: '150px',
+      width: '95%',
+      marginTop: '120px',
       marginLeft: 'auto',
       marginRight: 'auto',
     },
     table: {
       minWidth: 100,
       fontWeight: 'bold',
+    },
+    tableContainer: {
+      maxHeight: 610,
     },
     textField: {
       margin: '10px auto 10px auto',
