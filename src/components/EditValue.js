@@ -35,6 +35,7 @@ const EditValue = ({ classes, row }) => {
   const [open, setOpen] = useState(false);
   const [newValue, setNewValue] = useState(initialValue);
 
+  const { empresa } = useSelector((state) => state.data);
   const loading = useSelector((state) => state.UI.loading);
 
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const EditValue = ({ classes, row }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateData(newValue, row.id));
+    dispatch(updateData(newValue, row.id, empresa));
     handleClose();
   };
 
