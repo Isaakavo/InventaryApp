@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { companies } from '../util/companies';
 //MUI stuff
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { changeDb } from '../redux/actions/dataActions';
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -32,15 +32,17 @@ const NavBar = ({ classes }) => {
   const inventarySelect = (
     <FormControl className={classes.formControl} color='primary'>
       <Select
-        labelId='demo-simple-select-helper-label'
-        id='demo-simple-select-helper'
         value={empresa}
         onChange={handleChange}
         className={classes.selectorColor}
       >
-        <MenuItem value={'espectro'}>Espectro</MenuItem>
-        <MenuItem value={'material sin empresa'}>Material sin empresa</MenuItem>
-        <MenuItem value={'tainos'}>Tainos</MenuItem>
+        {companies.map((item) => {
+          return (
+            <MenuItem key={item.value} value={item.value}>
+              {item.label}
+            </MenuItem>
+          );
+        })}
       </Select>
       <FormHelperText className={classes.selectorColor}>
         Elegir inventario
