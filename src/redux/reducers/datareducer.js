@@ -12,7 +12,7 @@ const initialState = {
   empresa: 'espectro',
   ultimoId: 0,
 };
-
+// eslint-disable-next-line
 export default function (state = initialState, action) {
   switch (action.type) {
     case LOADING_DATA:

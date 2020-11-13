@@ -41,14 +41,14 @@ export const changeDb = (DB) => (dispatch) => {
   dispatch({ type: CHANGE_DATABASE, payload: DB });
 };
 
-export const updateData = (newData, id) => (dispatch) => {
+export const updateData = (newData, id, empresa) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   firebase
     .collection('inventario')
     .doc(id)
     .update(newData)
     .then(() => {
-      dispatch(getData());
+      dispatch(getData(empresa));
       dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => console.log(err));
@@ -57,7 +57,6 @@ export const updateData = (newData, id) => (dispatch) => {
 export const addData = (newItem, lastId) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   const date = new Date().toISOString();
-  console.log(date);
   lastId++;
   const newItemToAdd = {
     numero: lastId,
@@ -69,7 +68,7 @@ export const addData = (newItem, lastId) => (dispatch) => {
     userHandle: newItem.userHandle,
     ubicacion: newItem.ubicacion,
     observaciones: newItem.observaciones,
-    empresa: newItem.empresa,
+    empresa: newItem.empresa.toLowerCase(),
     fechaIngreso: date,
   };
   firebase
