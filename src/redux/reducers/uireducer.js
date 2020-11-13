@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   errors: null,
 };
-
+// eslint-disable-next-line
 export default function (state = initialState, action) {
   switch (action.type) {
     case LOADING_UI:
