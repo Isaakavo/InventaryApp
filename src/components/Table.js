@@ -58,7 +58,7 @@ const Table = ({ classes }) => {
   }, [empresa, dispatch]);
   return (
     <Paper className={classes.root}>
-      <TableContainer>
+      <TableContainer className={classes.tableContainer}>
         <TableMUI
           stickyHeader
           aria-label='sticky table'
