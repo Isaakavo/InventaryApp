@@ -55,7 +55,7 @@ const Table = ({ classes }) => {
 
   useEffect(() => {
     dispatch(getData(empresa));
-  }, [empresa]);
+  }, [empresa, dispatch]);
   return (
     <Paper className={classes.root}>
       <TableContainer>
