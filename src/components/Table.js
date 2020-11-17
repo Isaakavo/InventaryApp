@@ -14,7 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getData } from '../redux/actions/dataActions';
+import { getData, getAllData } from '../redux/actions/dataActions';
 const styles = (theme) => ({
   ...theme.spreadThis,
   spinnerDiv: {
@@ -55,6 +55,7 @@ const Table = ({ classes }) => {
 
   useEffect(() => {
     dispatch(getData(empresa));
+    dispatch(getAllData());
   }, [empresa, dispatch]);
   return (
     <Paper className={classes.root}>
@@ -70,7 +71,7 @@ const Table = ({ classes }) => {
               {header.map((head, index) => {
                 return (
                   <StyledTableCell key={index} className={classes.table}>
-                    {head.label}
+                    {head.header}
                   </StyledTableCell>
                 );
               })}

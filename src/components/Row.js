@@ -29,17 +29,17 @@ const Row = ({ row, header, classes }) => {
 
   const tableHead = innerHeader.map((head) => {
     return (
-      <TableCell key={head.id} className={classes.headerRow}>
-        {head.label}
+      <TableCell key={head.key} className={classes.headerRow}>
+        {head.header}
       </TableCell>
     );
   });
   const tableBody = innerHeader.map((head, index) => {
     let value;
-    if (head.id === 'fechaIngreso') {
-      value = dayjs(row[head.id]).format('DD/MM/YYYY');
+    if (head.key === 'fechaIngreso') {
+      value = dayjs(row[head.key]).format('DD/MM/YYYY');
     } else {
-      value = row[head.id];
+      value = row[head.key];
     }
     return <TableCell key={index}>{value}</TableCell>;
   });
@@ -56,7 +56,7 @@ const Row = ({ row, header, classes }) => {
           </IconButton>
         </TableCell>
         {header.map((head, index) => {
-          const value = row[head.id];
+          const value = row[head.key];
           return <TableCell key={index}>{value}</TableCell>;
         })}
         <TableCell>

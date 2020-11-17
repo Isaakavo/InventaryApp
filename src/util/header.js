@@ -1,15 +1,15 @@
 export const header = [
-  { id: 'numero', label: 'No' },
-  { id: 'clave', label: 'Clave' },
-  { id: 'equipo', label: 'Equipo' },
-  { id: 'caracteristicas', label: 'Caracteristicas' },
-  { id: 'marca', label: 'Marca' },
-  { id: 'cantidad', label: 'Cantidad' },
-  { id: 'empresa', label: 'Empresa' },
+  { key: 'numero', header: 'No', width: 5 },
+  { key: 'clave', header: 'Clave', width: 15 },
+  { key: 'equipo', header: 'Equipo', width: 25 },
+  { key: 'caracteristicas', header: 'Caracteristicas', width: 30 },
+  { key: 'marca', header: 'Marca', width: 24 },
+  { key: 'cantidad', header: 'Cantidad', width: 10 },
+  { key: 'empresa', header: 'Empresa', width: 25 },
 ];
 
 export const innerHeader = [
-  { id: 'ubicacion', label: 'Ubicación' },
-  { id: 'observaciones', label: 'Observaciones' },
-  { id: 'fechaIngreso', label: 'Fecha de ingreso' },
+  { key: 'ubicacion', header: 'Ubicación' },
+  { key: 'observaciones', header: 'Observaciones' },
+  { key: 'fechaIngreso', header: 'Fecha de ingreso' },
 ];
