@@ -20,7 +20,7 @@ const CreateExcelFile = ({ classes }) => {
 
   const excelExport = () => {
     const workbook = new ExcelJs.Workbook();
-    companies.map((company) => {
+    companies.forEach((company) => {
       const workSheet = workbook.addWorksheet(company.label);
       workSheet.mergeCells('A1:G1');
       workSheet.getCell('G1').value = company.label;
@@ -56,7 +56,7 @@ const CreateExcelFile = ({ classes }) => {
         column.width = head.width;
         return head.key;
       });
-      allData.map((element) => {
+      allData.forEach((element) => {
         if (element.empresa === company.value) {
           let elementRow = workSheet.addRow();
           for (let i = 0; i < totalColumns.length; i++) {
