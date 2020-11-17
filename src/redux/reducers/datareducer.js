@@ -4,10 +4,12 @@ import {
   SET_DATA,
   CHANGE_DATABASE,
   SET_LASTNUM,
+  SET_ALL_DATA,
 } from '../types';
 
 const initialState = {
   data: [],
+  allData: [],
   loading: false,
   empresa: 'espectro',
   ultimoId: 0,
@@ -41,6 +43,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ultimoId: action.payload,
+      };
+    case SET_ALL_DATA:
+      return {
+        ...state,
+        allData: action.payload,
       };
     default:
       return state;

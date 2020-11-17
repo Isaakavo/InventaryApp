@@ -6,6 +6,7 @@ import {
   ITEM_ADDED,
   CHANGE_DATABASE,
   SET_LASTNUM,
+  SET_ALL_DATA,
 } from '../types';
 import firebase from '../../firebaseConfig';
 
@@ -35,6 +36,25 @@ export const getData = (inventary) => (dispatch) => {
     .catch((err) => {
       console.error(err);
     });
+};
+
+export const getAllData = () => (dispatch) => {
+  firebase
+    .collection('inventario')
+    .orderBy('numero')
+    .get()
+    .then((res) => {
+      const elements = [];
+      res.forEach((doc) => {
+        elements.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch({
+        type: SET_ALL_DATA,
+        payload: elements,
+      });
+      console.log(elements);
+    })
+    .catch((err) => console.error(err));
 };
 
 export const changeDb = (DB) => (dispatch) => {

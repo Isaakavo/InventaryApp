@@ -9,3 +9,4 @@ export const SET_DATA = 'SET_DATA';
 export const ITEM_ADDED = 'ITEM_ADDED';
 export const CHANGE_DATABASE = 'CHANGE_DATABASE';
 export const SET_LASTNUM = 'SET_LASTNUM';
+export const SET_ALL_DATA = 'SET_ALL_DATA';
