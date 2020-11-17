@@ -5,7 +5,7 @@ import themeFile from './util/theme';
 //Components
 import NavBar from './components/NavBar';
 import Table from './components/Table';
-
+import CreateExcelFile from './components/CreateExcelFile';
 //Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -17,6 +17,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <NavBar />
+        <CreateExcelFile />
         <Table />
       </Provider>
     </MuiThemeProvider>

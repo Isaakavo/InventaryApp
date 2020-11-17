@@ -17,7 +17,7 @@ const theme = {
   spreadThis: {
     root: {
       width: '95%',
-      marginTop: '120px',
+      marginTop: '15px',
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -51,6 +51,10 @@ const theme = {
     },
     selectEmpty: {
       marginTop: 10,
+    },
+    exportButton: {
+      marginTop: '100px',
+      marginLeft: '85%',
     },
   },
 };
