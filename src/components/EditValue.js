@@ -52,6 +52,7 @@ const EditValue = ({ classes, row }) => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateData(newValue, row.id, empresa));
@@ -88,7 +89,7 @@ const EditValue = ({ classes, row }) => {
               name='clave'
               type='text'
               label='Clave'
-              placeholder='Clave del equipo'
+              placeholder={row.clave}
               className={classes.textField}
               value={newValue.clave}
               onChange={handleChange}
@@ -98,7 +99,7 @@ const EditValue = ({ classes, row }) => {
               name='equipo'
               type='text'
               label='Equipo'
-              placeholder='Nombre del equipo'
+              placeholder={row.equipo}
               className={classes.textField}
               value={newValue.equipo}
               onChange={handleChange}
@@ -110,7 +111,7 @@ const EditValue = ({ classes, row }) => {
               label='Caracteristicas'
               multiline
               rows='3'
-              placeholder='catacteristicas'
+              placeholder={row.caracteristicas}
               className={classes.textField}
               value={newValue.caracteristicas}
               onChange={handleChange}
@@ -120,7 +121,7 @@ const EditValue = ({ classes, row }) => {
               name='marca'
               type='text'
               label='marca'
-              placeholder='Marca del equipo'
+              placeholder={row.marca}
               className={classes.textField}
               value={newValue.marca}
               onChange={handleChange}
@@ -130,7 +131,7 @@ const EditValue = ({ classes, row }) => {
               name='cantidad'
               type='number'
               label='Cantidad'
-              placeholder='Cantidad'
+              placeholder={row.cantidad}
               className={classes.textField}
               value={newValue.cantidad}
               onChange={handleChange}
@@ -140,7 +141,7 @@ const EditValue = ({ classes, row }) => {
               name='empresa'
               type='text'
               label='Empresa'
-              placeholder='Empresa'
+              placeholder={row.empresa}
               className={classes.textField}
               value={newValue.empresa}
               onChange={handleChange}
@@ -150,7 +151,7 @@ const EditValue = ({ classes, row }) => {
               name='ubicacion'
               type='text'
               label='Ubicación'
-              placeholder='Ubicación'
+              placeholder={row.ubicacion}
               className={classes.textField}
               value={newValue.ubicacion}
               onChange={handleChange}
@@ -160,7 +161,7 @@ const EditValue = ({ classes, row }) => {
               name='observaciones'
               type='text'
               label='Observaciones'
-              placeholder='Observaciones'
+              placeholder={row.ubicaciones}
               className={classes.textField}
               value={newValue.observaciones}
               onChange={handleChange}
