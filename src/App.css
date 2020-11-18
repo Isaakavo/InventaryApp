@@ -14,6 +14,7 @@ body {
 .nav-container {
   display: flex;
   align-items: flex-start;
+  justify-content: flex-start;
 }
 .nav-container svg {
   color: #fff;

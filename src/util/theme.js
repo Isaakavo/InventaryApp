@@ -43,7 +43,7 @@ const theme = {
     },
     formControl: {
       margin: '10px auto 10px 50px',
-      paddingTop: '15px',
+      paddingTop: '10px',
       paddingBottom: '5px',
       minWidth: 120,
       borderColor: '#fff',
@@ -53,7 +53,7 @@ const theme = {
       marginTop: 10,
     },
     exportButton: {
-      marginLeft: '85%',
+      // marginLeft: '85%',
     },
     form: {
       textAlign: 'center',
