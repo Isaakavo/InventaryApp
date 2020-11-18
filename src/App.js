@@ -24,7 +24,6 @@ function App() {
     let unsuscribeFromAuth = null;
 
     unsuscribeFromAuth = admin.onAuthStateChanged((user) => {
-      console.log('in useEffect of app.js');
       if (user) {
         store.dispatch({ type: SET_AUTHENTICATED });
       } else {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 //MUI stuff
 import Grid from '@material-ui/core/Grid';
@@ -12,21 +12,18 @@ import { loginUser } from '../redux/actions/userActions';
 
 const styles = (theme) => ({
   ...theme.spreadThis,
+  errors: {
+    marginTop: '15px',
+    color: 'red',
+    textAlign: 'center',
+  },
 });
 
 const Login = ({ classes, history }) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [userErrors, setUserErrors] = useState({
-    errors: {
-      email: '',
-      password: '',
-    },
-  });
 
-  const UI = useSelector((state) => state.UI);
-
-  const { loading } = UI;
+  const { loading, errors } = useSelector((state) => state.UI);
 
   const dispatch = useDispatch();
 
@@ -34,14 +31,6 @@ const Login = ({ classes, history }) => {
     e.preventDefault();
     dispatch(loginUser(userEmail, userPassword, history));
   };
-
-  useEffect(() => {
-    if (UI.errors) {
-      setUserErrors({
-        errors: UI.errors,
-      });
-    }
-  }, [UI.errors]);
   return (
     <Grid container className={classes.form}>
       <Grid item sm />
@@ -55,9 +44,8 @@ const Login = ({ classes, history }) => {
             name='email'
             type='email'
             label='Correo'
+            error={errors ? true : false}
             className={classes.textField}
-            helperText={userErrors.errors.email}
-            error={userErrors.errors.email ? true : false}
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
             fullWidth
@@ -68,17 +56,11 @@ const Login = ({ classes, history }) => {
             type='password'
             label='Contraseña'
             className={classes.textField}
-            helperText={userErrors.errors.password}
-            error={userErrors.errors.password ? true : false}
+            error={errors ? true : false}
             value={userPassword}
             onChange={(e) => setUserPassword(e.target.value)}
             fullWidth
           />
-          {userErrors.errors.general && (
-            <Typography variant='body' className={classes.customError}>
-              {userErrors.errors.general}
-            </Typography>
-          )}
           <Button
             type='submit'
             variant='contained'
@@ -92,6 +74,11 @@ const Login = ({ classes, history }) => {
             )}
           </Button>
         </form>
+        {errors && (
+          <Typography variant='h5' className={classes.errors}>
+            Credenciales incorrectas
+          </Typography>
+        )}
       </Grid>
       <Grid item sm />
     </Grid>
