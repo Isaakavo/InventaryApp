@@ -7,6 +7,7 @@ import {
   CHANGE_DATABASE,
   SET_LASTNUM,
   SET_ALL_DATA,
+  SET_USER_DATA,
 } from '../types';
 import { firestore } from '../../firebaseConfig';
 
@@ -71,6 +72,18 @@ export const updateData = (newData, id, empresa) => (dispatch) => {
       dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => console.log(err));
+  const modifiedElements = {
+    idDoc: id,
+    fecha: new Date().toISOString(),
+    modificadoPor: 'user',
+  };
+  firestore
+    .collection('actualizacionDeElementos')
+    .add(modifiedElements)
+    .then(() => {
+      console.log('subido');
+    })
+    .catch((err) => console.error(err));
 };
 
 export const addData = (newItem, lastId) => (dispatch) => {
@@ -108,4 +121,21 @@ export const addData = (newItem, lastId) => (dispatch) => {
       });
     })
     .catch((err) => console.error(err));
+};
+
+export const getUserData = (id) => (dispatch) => {
+  firestore
+    .collection('usuarios')
+    .where('idUsuario', '==', id)
+    .get()
+    .then((res) => {
+      let elements = {};
+      res.forEach((doc) => {
+        elements = doc.data();
+      });
+      dispatch({
+        type: SET_USER_DATA,
+        payload: elements,
+      });
+    });
 };

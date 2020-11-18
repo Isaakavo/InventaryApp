@@ -1,15 +1,24 @@
 import { admin } from '../../firebaseConfig';
+import { getUserData } from '../actions/dataActions';
 
-import { SET_UNAUTHENTICATED } from '../types';
+import {
+  SET_ERRORS,
+  SET_UNAUTHENTICATED,
+  CLEAR_ERRORS,
+  LOADING_UI,
+} from '../types';
 
 export const loginUser = (email, password, history) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
   admin
     .signInWithEmailAndPassword(email, password)
     .then((user) => {
+      dispatch(getUserData(user.user.uid));
       history.push('/');
+      dispatch({ type: CLEAR_ERRORS });
     })
     .catch((err) => {
-      console.error(err);
+      dispatch({ type: SET_ERRORS, payload: err.message });
     });
 };
 

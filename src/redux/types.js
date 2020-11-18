@@ -13,3 +13,4 @@ export const SET_ALL_DATA = 'SET_ALL_DATA';
 //USER reducer types
 export const SET_AUTHENTICATED = 'SET_AUTHENTICATED';
 export const SET_UNAUTHENTICATED = 'SET_UNAUTHENTICATED';
+export const SET_USER_DATA = 'SET_USER_DATA';

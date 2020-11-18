@@ -1,10 +1,12 @@
-import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from '../types';
+import {
+  SET_AUTHENTICATED,
+  SET_UNAUTHENTICATED,
+  SET_USER_DATA,
+} from '../types';
 const initialState = {
   authenticated: false,
   loading: false,
   credentials: {},
-  likes: [],
-  notificatios: [],
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -19,7 +21,11 @@ export default function (state = initialState, action) {
         ...state,
         authenticated: false,
       };
-
+    case SET_USER_DATA:
+      return {
+        ...state,
+        credentials: action.payload,
+      };
     default:
       return state;
   }
