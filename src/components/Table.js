@@ -4,6 +4,7 @@ import Row from './Row';
 import { header } from '../util/header';
 import AddItem from './AddItem';
 
+import CreateExcelFile from './CreateExcelFile';
 // MUI
 import Paper from '@material-ui/core/Paper';
 import TableMUI from '@material-ui/core/Table';
@@ -39,6 +40,8 @@ const Table = ({ classes }) => {
   const { data, loading, empresa } = dataReducer;
   const dispatch = useDispatch();
 
+  const { authenticated } = useSelector((state) => state.user);
+
   const displayingRow = !loading ? (
     <TableBody>
       {data.map((row, index) => {
@@ -58,32 +61,35 @@ const Table = ({ classes }) => {
     dispatch(getAllData());
   }, [empresa, dispatch]);
   return (
-    <Paper className={classes.root}>
-      <TableContainer className={classes.tableContainer}>
-        <TableMUI
-          stickyHeader
-          aria-label='sticky table'
-          className={classes.table}
-        >
-          <TableHead className={classes.primary}>
-            <TableRow>
-              <StyledTableCell />
-              {header.map((head, index) => {
-                return (
-                  <StyledTableCell key={index} className={classes.table}>
-                    {head.header}
-                  </StyledTableCell>
-                );
-              })}
-              <StyledTableCell>
-                <AddItem />
-              </StyledTableCell>
-            </TableRow>
-          </TableHead>
-          {displayingRow}
-        </TableMUI>
-      </TableContainer>
-    </Paper>
+    <>
+      {authenticated && <CreateExcelFile />}
+      <Paper className={classes.root}>
+        <TableContainer className={classes.tableContainer}>
+          <TableMUI
+            stickyHeader
+            aria-label='sticky table'
+            className={classes.table}
+          >
+            <TableHead className={classes.primary}>
+              <TableRow>
+                <StyledTableCell />
+                {header.map((head, index) => {
+                  return (
+                    <StyledTableCell key={index} className={classes.table}>
+                      {head.header}
+                    </StyledTableCell>
+                  );
+                })}
+                <StyledTableCell>
+                  {authenticated && <AddItem />}
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            {displayingRow}
+          </TableMUI>
+        </TableContainer>
+      </Paper>
+    </>
   );
 };
 

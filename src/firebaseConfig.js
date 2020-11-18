@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/firestore';
 
@@ -17,6 +18,8 @@ const fb = firebase.initializeApp(firebaseConfig);
 // Initialize analytics
 firebase.analytics();
 // Initialize firestore
-const firestore = fb.firestore();
+export const firestore = fb.firestore();
+// Initialize auth
+export const admin = fb.auth();
 
-export default firestore;
+// export default firestore;

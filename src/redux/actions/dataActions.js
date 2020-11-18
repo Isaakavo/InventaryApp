@@ -8,11 +8,11 @@ import {
   SET_LASTNUM,
   SET_ALL_DATA,
 } from '../types';
-import firebase from '../../firebaseConfig';
+import { firestore } from '../../firebaseConfig';
 
 export const getData = (inventary) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
-  firebase
+  firestore
     .collection('inventario')
     .where('empresa', '==', inventary)
     .orderBy('numero')
@@ -39,7 +39,7 @@ export const getData = (inventary) => (dispatch) => {
 };
 
 export const getAllData = () => (dispatch) => {
-  firebase
+  firestore
     .collection('inventario')
     .orderBy('numero')
     .get()
@@ -52,7 +52,6 @@ export const getAllData = () => (dispatch) => {
         type: SET_ALL_DATA,
         payload: elements,
       });
-      console.log(elements);
     })
     .catch((err) => console.error(err));
 };
@@ -63,7 +62,7 @@ export const changeDb = (DB) => (dispatch) => {
 
 export const updateData = (newData, id, empresa) => (dispatch) => {
   dispatch({ type: LOADING_UI });
-  firebase
+  firestore
     .collection('inventario')
     .doc(id)
     .update(newData)
@@ -91,7 +90,7 @@ export const addData = (newItem, lastId) => (dispatch) => {
     empresa: newItem.empresa.toLowerCase(),
     fechaIngreso: date,
   };
-  firebase
+  firestore
     .collection('inventario')
     .add(newItemToAdd)
     .then((doc) => {

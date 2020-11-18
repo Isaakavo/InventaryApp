@@ -16,7 +16,7 @@ const styles = (theme) => ({
 });
 
 const CreateExcelFile = ({ classes }) => {
-  const { allData } = useSelector((state) => state.data);
+  const { allData, loading } = useSelector((state) => state.data);
 
   const excelExport = () => {
     const workbook = new ExcelJs.Workbook();
@@ -96,6 +96,7 @@ const CreateExcelFile = ({ classes }) => {
         color='primary'
         variant='contained'
         onClick={() => excelExport()}
+        disabled={loading}
       >
         Exportar Excel
       </Button>

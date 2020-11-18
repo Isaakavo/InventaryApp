@@ -17,7 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 //Redux
-// import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -25,7 +25,8 @@ const styles = (theme) => ({
 
 const Row = ({ row, header, classes }) => {
   const [open, setOpen] = useState(false);
-  // const date = dayjs.extend(row.fechaIngreso);
+
+  const { authenticated } = useSelector((state) => state.user);
 
   const tableHead = innerHeader.map((head) => {
     return (
@@ -59,9 +60,7 @@ const Row = ({ row, header, classes }) => {
           const value = row[head.key];
           return <TableCell key={index}>{value}</TableCell>;
         })}
-        <TableCell>
-          <Editvalue row={row} />
-        </TableCell>
+        <TableCell>{authenticated && <Editvalue row={row} />}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
