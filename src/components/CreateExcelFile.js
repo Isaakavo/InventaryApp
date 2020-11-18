@@ -5,8 +5,9 @@ import saveAs from 'file-saver';
 import { header } from '../util/header';
 import { companies } from '../util/companies';
 import dayjs from 'dayjs';
-//MUI
-import Button from '@material-ui/core/Button';
+import MyButton from '../util/MyButton';
+//Icons
+import SaveAlt from '@material-ui/icons/SaveAlt';
 
 //Redux
 import { useSelector } from 'react-redux';
@@ -18,6 +19,7 @@ const styles = (theme) => ({
 const CreateExcelFile = ({ classes }) => {
   const { allData, loading } = useSelector((state) => state.data);
 
+  //Funciton to export excel
   const excelExport = () => {
     const workbook = new ExcelJs.Workbook();
     companies.forEach((company) => {
@@ -91,15 +93,14 @@ const CreateExcelFile = ({ classes }) => {
   };
   return (
     <>
-      <Button
-        className={classes.exportButton}
-        color='primary'
-        variant='contained'
+      <MyButton
+        tip='Descargar Excel'
+        color='secondary'
         onClick={() => excelExport()}
         disabled={loading}
       >
-        Exportar Excel
-      </Button>
+        <SaveAlt />
+      </MyButton>
     </>
   );
 };
