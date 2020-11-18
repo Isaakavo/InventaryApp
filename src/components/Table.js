@@ -4,7 +4,6 @@ import Row from './Row';
 import { header } from '../util/header';
 import AddItem from './AddItem';
 
-import CreateExcelFile from './CreateExcelFile';
 // MUI
 import Paper from '@material-ui/core/Paper';
 import TableMUI from '@material-ui/core/Table';
@@ -16,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getData, getAllData } from '../redux/actions/dataActions';
+import { Typography } from '@material-ui/core';
 const styles = (theme) => ({
   ...theme.spreadThis,
   spinnerDiv: {
@@ -62,33 +62,36 @@ const Table = ({ classes }) => {
   }, [empresa, dispatch]);
   return (
     <>
-      {authenticated && <CreateExcelFile />}
-      <Paper className={classes.root}>
-        <TableContainer className={classes.tableContainer}>
-          <TableMUI
-            stickyHeader
-            aria-label='sticky table'
-            className={classes.table}
-          >
-            <TableHead className={classes.primary}>
-              <TableRow>
-                <StyledTableCell />
-                {header.map((head, index) => {
-                  return (
-                    <StyledTableCell key={index} className={classes.table}>
-                      {head.header}
-                    </StyledTableCell>
-                  );
-                })}
-                <StyledTableCell>
-                  {authenticated && <AddItem />}
-                </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            {displayingRow}
-          </TableMUI>
-        </TableContainer>
-      </Paper>
+      {authenticated ? (
+        <Paper className={classes.root}>
+          <TableContainer className={classes.tableContainer}>
+            <TableMUI
+              stickyHeader
+              aria-label='sticky table'
+              className={classes.table}
+            >
+              <TableHead className={classes.primary}>
+                <TableRow>
+                  <StyledTableCell />
+                  {header.map((head, index) => {
+                    return (
+                      <StyledTableCell key={index} className={classes.table}>
+                        {head.header}
+                      </StyledTableCell>
+                    );
+                  })}
+                  <StyledTableCell>
+                    {authenticated && <AddItem />}
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              {displayingRow}
+            </TableMUI>
+          </TableContainer>
+        </Paper>
+      ) : (
+        <Typography variant='h2'>Por favor, inicie sesión</Typography>
+      )}
     </>
   );
 };
