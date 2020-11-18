@@ -8,8 +8,8 @@ const theme = {
     },
     secondary: {
       light: '#ff6333',
-      // main: '#ff3d00',
-      main: '#fff',
+      main: '#ff3d00',
+      // main: '#fff',
       dark: '#b22a00',
       contrastText: '#fff',
     },
@@ -53,8 +53,13 @@ const theme = {
       marginTop: 10,
     },
     exportButton: {
-      marginTop: '100px',
       marginLeft: '85%',
+    },
+    form: {
+      textAlign: 'center',
+    },
+    pageTitle: {
+      margin: '10px auto 10px auto',
     },
   },
 };
