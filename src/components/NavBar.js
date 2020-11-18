@@ -3,6 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { companies } from '../util/companies';
 import MyButton from '../util/MyButton';
 import { Link } from 'react-router-dom';
+import CreateExcelFile from './CreateExcelFile';
 //MUI stuff
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,14 +24,17 @@ const styles = (theme) => ({
     borderColor: '#fff',
     color: '#fff',
   },
+  loginButton: {
+    color: '#b71c1c',
+    backgroundColor: '#fff',
+  },
 });
 
 const NavBar = ({ classes }) => {
-  console.log(classes);
   const [empresa, setEmpresa] = useState('espectro');
 
   const dispatch = useDispatch();
-  const { authenticated } = useSelector((state) => state.user);
+  const { authenticated, credentials } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setEmpresa(e.target.value);
@@ -46,7 +50,7 @@ const NavBar = ({ classes }) => {
       <Toolbar className='nav-container'>
         {
           <>
-            <FormControl className={classes.formControl} color='primary-dark'>
+            <FormControl className={classes.formControl} color='primary'>
               <Select
                 value={empresa}
                 onChange={handleChange}
@@ -61,17 +65,20 @@ const NavBar = ({ classes }) => {
                 })}
               </Select>
               <FormHelperText className={classes.selectorColor}>
-                Elegir inventario
+                Inventario
               </FormHelperText>
-            </FormControl>{' '}
+            </FormControl>
             {authenticated ? (
-              <MyButton tip='Cerrar Sesión' onClick={handleLogout}>
-                <KeyboardReturn color='primary' />
-              </MyButton>
+              <>
+                <CreateExcelFile />
+                <MyButton tip='Cerrar Sesión' onClick={handleLogout}>
+                  <KeyboardReturn color='primary' />
+                </MyButton>
+              </>
             ) : (
               <Button
                 variant='contained'
-                color={classes.selectorColor}
+                className={classes.loginButton}
                 component={Link}
                 to='/iniciar-sesion'
               >
