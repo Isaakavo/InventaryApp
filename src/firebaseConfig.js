@@ -21,5 +21,3 @@ firebase.analytics();
 export const firestore = fb.firestore();
 // Initialize auth
 export const admin = fb.auth();
-
-// export default firestore;
