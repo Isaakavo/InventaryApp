@@ -20,6 +20,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         authenticated: false,
+        credentials: {},
       };
     case SET_USER_DATA:
       return {
