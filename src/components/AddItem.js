@@ -48,6 +48,7 @@ const AddItem = ({ classes }) => {
   const handleChange = (e) => {
     setNewItem({
       ...newItem,
+      // empresa: empresa,
       [e.target.name]: e.target.value,
     });
   };
@@ -59,6 +60,10 @@ const AddItem = ({ classes }) => {
     setNewItem(initialValue);
   };
   useEffect(() => {
+    setNewItem({
+      ...initialValue,
+      empresa: empresa,
+    });
     initialValue = {
       ...initialValue,
       empresa: empresa,
