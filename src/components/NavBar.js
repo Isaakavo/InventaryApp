@@ -12,6 +12,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 //Icons
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 //Redux
@@ -27,6 +29,8 @@ const styles = (theme) => ({
   loginButton: {
     color: '#b71c1c',
     backgroundColor: '#fff',
+    marginLeft: '85%',
+    margin: 25,
   },
 });
 
@@ -48,7 +52,7 @@ const NavBar = ({ classes }) => {
   return (
     <AppBar>
       <Toolbar className='nav-container'>
-        {
+        {authenticated ? (
           <>
             <FormControl className={classes.formControl} color='primary'>
               <Select
@@ -68,25 +72,25 @@ const NavBar = ({ classes }) => {
                 Inventario
               </FormHelperText>
             </FormControl>
-            {authenticated ? (
-              <>
-                <CreateExcelFile />
-                <MyButton tip='Cerrar Sesión' onClick={handleLogout}>
-                  <KeyboardReturn color='primary' />
-                </MyButton>
-              </>
-            ) : (
-              <Button
-                variant='contained'
-                className={classes.loginButton}
-                component={Link}
-                to='/iniciar-sesion'
-              >
-                Iniciar Sesión
-              </Button>
-            )}
+
+            <Tooltip title={`Sesión iniciada con ${credentials.email}`}>
+              <Avatar>{credentials.letra}</Avatar>
+            </Tooltip>
+            <CreateExcelFile />
+            <MyButton tip='Cerrar Sesión' onClick={handleLogout}>
+              <KeyboardReturn color='primary' />
+            </MyButton>
           </>
-        }
+        ) : (
+          <Button
+            variant='contained'
+            className={classes.loginButton}
+            component={Link}
+            to='/'
+          >
+            Iniciar Sesión
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
