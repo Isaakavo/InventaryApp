@@ -14,7 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getData, getAllData } from '../redux/actions/dataActions';
+import { getAllData, getData } from '../redux/actions/dataActions';
 import { Typography } from '@material-ui/core';
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -36,30 +36,33 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const Table = ({ classes }) => {
-  const dataReducer = useSelector((state) => state.data);
-  const { data, loading, empresa } = dataReducer;
+  const { data, loading, empresa } = useSelector((state) => state.data);
+
   const dispatch = useDispatch();
 
   const { authenticated } = useSelector((state) => state.user);
 
-  const displayingRow = !loading ? (
-    <TableBody>
-      {data.map((row, index) => {
-        return <Row key={index} row={row} header={header} />;
-      })}
-    </TableBody>
-  ) : (
-    <TableBody>
-      <TableRow>
-        <TableCell>Cargando...</TableCell>
-      </TableRow>
-    </TableBody>
-  );
+  const displayingRow =
+    !loading && authenticated ? (
+      <TableBody>
+        {data.map((row, index) => {
+          return <Row key={index} row={row} header={header} />;
+        })}
+      </TableBody>
+    ) : (
+      <TableBody>
+        <TableRow>
+          <TableCell>Cargando...</TableCell>
+        </TableRow>
+      </TableBody>
+    );
 
   useEffect(() => {
     dispatch(getData(empresa));
-    dispatch(getAllData());
   }, [empresa, dispatch]);
+  useEffect(() => {
+    dispatch(getAllData());
+  }, [dispatch]);
   return (
     <>
       {authenticated ? (
