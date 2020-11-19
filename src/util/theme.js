@@ -29,7 +29,7 @@ const theme = {
       maxHeight: 610,
     },
     textField: {
-      margin: '10px auto 10px auto',
+      margin: '8px auto 10px auto',
     },
     headerRow: {
       fontWeight: 'bold',
@@ -60,6 +60,12 @@ const theme = {
     },
     pageTitle: {
       margin: '10px auto 10px auto',
+    },
+    login: {
+      width: '50%',
+      margin: '10px auto',
+      padding: 10,
+      paddingBottom: '50px',
     },
   },
 };
