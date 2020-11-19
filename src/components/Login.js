@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
 //Redux stuff
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/actions/userActions';
@@ -32,56 +33,58 @@ const Login = ({ classes, history }) => {
     dispatch(loginUser(userEmail, userPassword, history));
   };
   return (
-    <Grid container className={classes.form}>
-      <Grid item sm />
-      <Grid item sm>
-        <Typography variant='h2' className={classes.pageTitle}>
-          Inicio de Sesión
-        </Typography>
-        <form noValidate onSubmit={handleSubmit}>
-          <TextField
-            id='email'
-            name='email'
-            type='email'
-            label='Correo'
-            error={errors ? true : false}
-            className={classes.textField}
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
-            fullWidth
-          />
-          <TextField
-            id='password'
-            name='password'
-            type='password'
-            label='Contraseña'
-            className={classes.textField}
-            error={errors ? true : false}
-            value={userPassword}
-            onChange={(e) => setUserPassword(e.target.value)}
-            fullWidth
-          />
-          <Button
-            type='submit'
-            variant='contained'
-            color='primary'
-            className={classes.button}
-            disabled={loading}
-          >
-            Iniciar Sesión
-            {loading && (
-              <CircularProgress size={30} className={classes.progress} />
-            )}
-          </Button>
-        </form>
-        {errors && (
-          <Typography variant='h5' className={classes.errors}>
-            Credenciales incorrectas
+    <Paper className={classes.login}>
+      <Grid container className={classes.form}>
+        <Grid item sm />
+        <Grid item sm>
+          <Typography variant='h2' className={classes.pageTitle}>
+            Inicio de Sesión
           </Typography>
-        )}
+          <form noValidate onSubmit={handleSubmit}>
+            <TextField
+              id='email'
+              name='email'
+              type='email'
+              label='Correo'
+              error={errors ? true : false}
+              className={classes.textField}
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              id='password'
+              name='password'
+              type='password'
+              label='Contraseña'
+              className={classes.textField}
+              error={errors ? true : false}
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
+              fullWidth
+            />
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              className={classes.button}
+              disabled={loading}
+            >
+              Iniciar Sesión
+              {loading && (
+                <CircularProgress size={30} className={classes.progress} />
+              )}
+            </Button>
+          </form>
+          {errors && (
+            <Typography variant='h5' className={classes.errors}>
+              Credenciales incorrectas
+            </Typography>
+          )}
+        </Grid>
+        <Grid item sm />
       </Grid>
-      <Grid item sm />
-    </Grid>
+    </Paper>
   );
 };
 
