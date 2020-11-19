@@ -41,8 +41,8 @@ function App() {
           <NavBar />
           <div className='container'>
             <Switch>
-              <Route exact path='/' component={Table} />
-              <AuthRoute exact path='/iniciar-sesion' component={Login} />
+              <AuthRoute exact path='/' component={Login} />
+              <Route exact path='/inventario' component={Table} />
             </Switch>
           </div>
         </Router>
