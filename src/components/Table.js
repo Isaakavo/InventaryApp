@@ -81,6 +81,7 @@ const Table = ({ classes }) => {
                   <StyledTableCell>
                     {authenticated && <AddItem />}
                   </StyledTableCell>
+                  <StyledTableCell />
                 </TableRow>
               </TableHead>
               {displayingRow}

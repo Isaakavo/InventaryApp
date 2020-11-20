@@ -16,8 +16,10 @@ import Typography from '@material-ui/core/Typography';
 //Icon
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Image from '@material-ui/icons/Image';
 //Redux
 import { useSelector } from 'react-redux';
+import MyButton from '../util/MyButton';
 
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -61,6 +63,25 @@ const Row = ({ row, header, classes }) => {
           return <TableCell key={index}>{value}</TableCell>;
         })}
         <TableCell>{authenticated && <Editvalue row={row} />}</TableCell>
+        <TableCell>
+          {row.imagen !== undefined ? (
+            <MyButton
+              tip={row.imagen}
+              onClick={() => window.open(row.imagen)}
+              className={classes.button}
+            >
+              <Image color='primary' />
+            </MyButton>
+          ) : (
+            <MyButton
+              tip='No se encontró una imagen'
+              disabled={true}
+              className={classes.button}
+            >
+              <Image color='disabled' />
+            </MyButton>
+          )}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

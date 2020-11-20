@@ -16,7 +16,7 @@ const theme = {
   },
   spreadThis: {
     root: {
-      width: '95%',
+      width: '100%',
       marginTop: '15px',
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -35,7 +35,6 @@ const theme = {
       fontWeight: 'bold',
     },
     button: {
-      marginTop: 20,
       position: 'relative',
     },
     progress: {
