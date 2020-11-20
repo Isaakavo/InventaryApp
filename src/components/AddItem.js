@@ -82,7 +82,7 @@ const AddItem = ({ classes }) => {
         open={open}
         onClose={() => setOpen(false)}
         fullWidth
-        maxWidth='md'
+        maxWidth='sm'
       >
         <DialogTitle>Agregar elementos</DialogTitle>
         <DialogContent>
