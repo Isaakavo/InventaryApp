@@ -18,11 +18,6 @@ import { getAllData, getData } from '../redux/actions/dataActions';
 import { Typography } from '@material-ui/core';
 const styles = (theme) => ({
   ...theme.spreadThis,
-  spinnerDiv: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -73,7 +68,7 @@ const Table = ({ classes }) => {
               aria-label='sticky table'
               className={classes.table}
             >
-              <TableHead className={classes.primary}>
+              <TableHead>
                 <TableRow>
                   <StyledTableCell />
                   {header.map((head, index) => {
