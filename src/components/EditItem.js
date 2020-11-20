@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { companies } from '../util/companies';
@@ -9,16 +9,18 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
 import Inputlabel from '@material-ui/core/InputLabel';
-//Icons
-import AddIcon from '@material-ui/icons/Add';
+//Icon
+import EditIcon from '@material-ui/icons/Edit';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { addData } from '../redux/actions/dataActions';
+import { updateData } from '../redux/actions/dataActions';
 
-let initialValue = {
+const initialValue = {
   clave: '',
   equipo: '',
   caracteristicas: '',
@@ -27,73 +29,74 @@ let initialValue = {
   userHandle: '',
   ubicacion: '',
   observaciones: '',
-  fechaIngreso: '',
   empresa: '',
 };
 
 const styles = (theme) => ({
   ...theme.spreadThis,
-  buttonAdd: {
-    color: theme.palette.common.white,
-  },
 });
 
-const AddItem = ({ classes }) => {
-  const { loading, empresa, ultimoId } = useSelector((state) => state.data);
+const EditValue = ({ classes, row }) => {
+  const [open, setOpen] = useState(false);
+  const [newValue, setNewValue] = useState(initialValue);
+
+  const { empresa } = useSelector((state) => state.data);
+  const loading = useSelector((state) => state.UI.loading);
+
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
-  const [newItem, setNewItem] = useState(initialValue);
-
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleChange = (e) => {
-    setNewItem({
-      ...newItem,
-      // empresa: empresa,
+    setNewValue({
+      ...newValue,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addData(newItem, ultimoId));
-    setOpen(false);
-    setNewItem(initialValue);
+    dispatch(updateData(newValue, row.id, empresa));
+    handleClose();
   };
+
   useEffect(() => {
-    setNewItem({
-      ...initialValue,
-      empresa: empresa,
+    setNewValue({
+      clave: row.clave ? row.clave : '',
+      equipo: row.equipo ? row.equipo : '',
+      caracteristicas: row.caracteristicas ? row.caracteristicas : '',
+      marca: row.marca ? row.marca : '',
+      cantidad: row.cantidad ? row.cantidad : '',
+      userHandle: row.userHandle ? row.userHandle : '',
+      ubicacion: row.ubicacion ? row.ubicacion : '',
+      observaciones: row.observaciones ? row.observaciones : '',
+      empresa: row.empresa ? row.empresa : '',
     });
-    initialValue = {
-      ...initialValue,
-      empresa: empresa,
-    };
-  }, [empresa]);
+  }, [row]);
   return (
     <>
       <MyButton
-        tip='Agregar un nuevo elemento al inventario'
-        onClick={() => setOpen(true)}
-        btnClassName={classes.buttonAdd}
+        tip='editar'
+        onClick={() => handleOpen()}
+        btnClassName={classes.button}
       >
-        <AddIcon />
+        <EditIcon color='primary' />
       </MyButton>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        fullWidth
-        maxWidth='md'
-      >
-        <DialogTitle>Agregar elementos</DialogTitle>
+      <Dialog open={open} onClose={() => handleClose()} fullWidth maxWidth='sm'>
+        <DialogTitle>Editar valores</DialogTitle>
         <DialogContent>
           <form>
             <TextField
               name='clave'
               type='text'
               label='Clave'
-              placeholder='Clave del equipo'
+              placeholder={row.clave}
               className={classes.textField}
-              value={newItem.clave}
+              value={newValue.clave}
               onChange={handleChange}
               fullWidth
             />
@@ -101,9 +104,9 @@ const AddItem = ({ classes }) => {
               name='equipo'
               type='text'
               label='Equipo'
-              placeholder='Nombre del equipo'
+              placeholder={row.equipo}
               className={classes.textField}
-              value={newItem.equipo}
+              value={newValue.equipo}
               onChange={handleChange}
               fullWidth
             />
@@ -113,9 +116,9 @@ const AddItem = ({ classes }) => {
               label='Caracteristicas'
               multiline
               rows='3'
-              placeholder='catacteristicas'
+              placeholder={row.caracteristicas}
               className={classes.textField}
-              value={newItem.caracteristicas}
+              value={newValue.caracteristicas}
               onChange={handleChange}
               fullWidth
             />
@@ -123,9 +126,9 @@ const AddItem = ({ classes }) => {
               name='marca'
               type='text'
               label='marca'
-              placeholder='Marca del equipo'
+              placeholder={row.marca}
               className={classes.textField}
-              value={newItem.marca}
+              value={newValue.marca}
               onChange={handleChange}
               fullWidth
             />
@@ -133,9 +136,9 @@ const AddItem = ({ classes }) => {
               name='cantidad'
               type='number'
               label='Cantidad'
-              placeholder='Cantidad'
+              placeholder={row.cantidad}
               className={classes.textField}
-              value={newItem.cantidad >= 0 ? newItem.cantidad : 0}
+              value={newValue.cantidad >= 0 ? newValue.cantidad : 0}
               onChange={handleChange}
               fullWidth
             />
@@ -161,9 +164,9 @@ const AddItem = ({ classes }) => {
               name='ubicacion'
               type='text'
               label='Ubicación'
-              placeholder='Ubicación'
+              placeholder={row.ubicacion}
               className={classes.textField}
-              value={newItem.ubicacion}
+              value={newValue.ubicacion}
               onChange={handleChange}
               fullWidth
             />
@@ -171,16 +174,16 @@ const AddItem = ({ classes }) => {
               name='observaciones'
               type='text'
               label='Observaciones'
-              placeholder='Observaciones'
+              placeholder={row.ubicaciones}
               className={classes.textField}
-              value={newItem.observaciones}
+              value={newValue.observaciones}
               onChange={handleChange}
               fullWidth
             />
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color='primary'>
+          <Button onClick={handleClose} color='primary'>
             Cancelar
           </Button>
           <Button
@@ -189,10 +192,10 @@ const AddItem = ({ classes }) => {
             variant='contained'
             disabled={loading}
           >
-            Subir
-            {/* {loading && (
+            Actualizar
+            {loading && (
               <CircularProgress size={30} className={classes.progressSpiner} />
-            )} */}
+            )}
           </Button>
         </DialogActions>
       </Dialog>
@@ -200,4 +203,4 @@ const AddItem = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(AddItem);
+export default withStyles(styles)(EditValue);
