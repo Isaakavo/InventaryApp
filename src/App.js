@@ -16,6 +16,7 @@ import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './redux/types';
 
 //Firebase
 import { admin } from './firebaseConfig';
+import { getUserData } from './redux/actions/dataActions';
 
 const theme = createMuiTheme(themeFile);
 
@@ -26,6 +27,7 @@ function App() {
     unsuscribeFromAuth = admin.onAuthStateChanged((user) => {
       if (user) {
         store.dispatch({ type: SET_AUTHENTICATED });
+        store.dispatch(getUserData(user.uid));
       } else {
         store.dispatch({ type: SET_UNAUTHENTICATED });
       }
