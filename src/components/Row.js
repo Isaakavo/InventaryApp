@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Editvalue from './EditValue';
+import Editvalue from './EditItem';
 import withStyles from '@material-ui/core/styles/withStyles';
 import dayjs from 'dayjs';
 import { innerHeader } from '../util/header';
