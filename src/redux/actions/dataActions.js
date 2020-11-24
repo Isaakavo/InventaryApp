@@ -10,6 +10,7 @@ import {
   SET_USER_DATA,
 } from '../types';
 import { firestore } from '../../firebaseConfig';
+import { storage } from '../../firebaseConfig';
 
 export const getData = (inventary) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
@@ -61,16 +62,16 @@ export const changeDb = (DB) => (dispatch) => {
   dispatch({ type: CHANGE_DATABASE, payload: DB });
 };
 
-export const updateData = (newData, id, empresa) => (dispatch) => {
+export const updateData = (newData, id, empresa, image) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   firestore
     .collection('inventario')
     .doc(id)
     .update(newData)
     .then(() => {
-      dispatch(getData(empresa));
-      dispatch({ type: STOP_LOADING_UI });
+      dispatch(uploadImage(image, id, empresa));
     })
+
     .catch((err) => console.log(err));
   const modifiedElements = {
     idDoc: id,
@@ -80,9 +81,7 @@ export const updateData = (newData, id, empresa) => (dispatch) => {
   firestore
     .collection('actualizacionDeElementos')
     .add(modifiedElements)
-    .then(() => {
-      console.log('subido');
-    })
+    .then(() => {})
     .catch((err) => console.error(err));
 };
 
@@ -119,6 +118,8 @@ export const addData = (newItem, lastId) => (dispatch) => {
         type: SET_LASTNUM,
         payload: lastId,
       });
+      dispatch(uploadImage(newItem.image, doc.id, newItem.empresa));
+      console.log(newItem.image.name);
     })
     .catch((err) => console.error(err));
 };
@@ -138,4 +139,42 @@ export const getUserData = (id) => (dispatch) => {
         payload: elements,
       });
     });
+};
+
+export const uploadImage = (image, id, empresa) => (dispatch) => {
+  // dispatch({ type: LOADING_DATA });
+  if (image === '') {
+    console.log('Seleciona una imagen, puñetas');
+  }
+  const uploadTask = storage.ref(`/${empresa}/${image.name}`).put(image);
+  //initiate the firebase side uploading
+  uploadTask.on(
+    'state_changed',
+    (snapshot) => {
+      console.log(snapshot);
+    },
+    (err) => {
+      console.log(err);
+    },
+    () => {
+      storage
+        .ref(empresa)
+        .child(image.name)
+        .getDownloadURL()
+        .then((url) => {
+          firestore
+            .collection('inventario')
+            .doc(id)
+            .update({
+              imagen: url,
+            })
+            .catch((err) => console.log(err));
+        })
+        .then(() => {
+          dispatch(getData(empresa));
+          dispatch({ type: STOP_LOADING_UI });
+        })
+        .catch((err) => console.error(err));
+    }
+  );
 };

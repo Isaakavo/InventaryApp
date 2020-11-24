@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { companies } from '../util/companies';
@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Inputlabel from '@material-ui/core/InputLabel';
+import Typography from '@material-ui/core/Typography';
 //Icons
 import AddIcon from '@material-ui/icons/Add';
 //Redux
@@ -44,6 +45,9 @@ const AddItem = ({ classes }) => {
 
   const [open, setOpen] = useState(false);
   const [newItem, setNewItem] = useState(initialValue);
+  const [imageAsFile, setImageAsFile] = useState('');
+
+  const imageInput = useRef();
 
   const handleChange = (e) => {
     setNewItem({
@@ -59,6 +63,21 @@ const AddItem = ({ classes }) => {
     setOpen(false);
     setNewItem(initialValue);
   };
+
+  const handleSetImage = (e) => {
+    const imageName = e.target.files[0];
+    setImageAsFile(imageName);
+    setNewItem({
+      ...newItem,
+      image: imageName,
+    });
+    console.log(imageName);
+  };
+  const handleImageChange = () => {
+    const fileInput = imageInput.current;
+    fileInput.click();
+  };
+  console.log(newItem);
   useEffect(() => {
     setNewItem({
       ...initialValue,
@@ -177,6 +196,25 @@ const AddItem = ({ classes }) => {
               onChange={handleChange}
               fullWidth
             />
+            <input
+              type='file'
+              id='imageInput'
+              ref={imageInput}
+              hidden='hidden'
+              onChange={handleSetImage}
+            />
+            <div className={classes.imageContainer}>
+              <Typography variant='body1'>
+                Nombre: {imageAsFile.name}
+              </Typography>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleImageChange}
+              >
+                Elegir imagen
+              </Button>
+            </div>
           </form>
         </DialogContent>
         <DialogActions>

@@ -66,6 +66,11 @@ const theme = {
       padding: 10,
       paddingBottom: '50px',
     },
+    imageContainer: {
+      paddingTop: '10px',
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
   },
 };
 

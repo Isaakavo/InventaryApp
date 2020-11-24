@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { companies } from '../util/companies';
@@ -12,7 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import Typography from '@material-ui/core/Typography';
 import Inputlabel from '@material-ui/core/InputLabel';
 //Icon
 import EditIcon from '@material-ui/icons/Edit';
@@ -39,6 +39,9 @@ const styles = (theme) => ({
 const EditValue = ({ classes, row }) => {
   const [open, setOpen] = useState(false);
   const [newValue, setNewValue] = useState(initialValue);
+  const [imageAsFile, setImageAsFile] = useState('');
+
+  const imageInput = useRef();
 
   const { empresa } = useSelector((state) => state.data);
   const loading = useSelector((state) => state.UI.loading);
@@ -49,7 +52,11 @@ const EditValue = ({ classes, row }) => {
     setOpen(true);
   };
   const handleClose = () => {
-    setOpen(false);
+    if (!loading) {
+      console.log('closing');
+      setOpen(false);
+      setImageAsFile('');
+    }
   };
   const handleChange = (e) => {
     setNewValue({
@@ -60,8 +67,17 @@ const EditValue = ({ classes, row }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateData(newValue, row.id, empresa));
+    dispatch(updateData(newValue, row.id, empresa, imageAsFile));
     handleClose();
+  };
+  const handleSetImage = (e) => {
+    const image = e.target.files[0];
+    console.log(image);
+    setImageAsFile(image);
+  };
+  const handleImageChange = () => {
+    const fileInput = imageInput.current;
+    fileInput.click();
   };
 
   useEffect(() => {
@@ -87,7 +103,7 @@ const EditValue = ({ classes, row }) => {
         <EditIcon color='primary' />
       </MyButton>
       <Dialog open={open} onClose={() => handleClose()} fullWidth maxWidth='sm'>
-        <DialogTitle>Editar valores</DialogTitle>
+        <DialogTitle>Editar</DialogTitle>
         <DialogContent>
           <form>
             <TextField
@@ -180,6 +196,25 @@ const EditValue = ({ classes, row }) => {
               onChange={handleChange}
               fullWidth
             />
+            <input
+              type='file'
+              id='imageInput'
+              ref={imageInput}
+              hidden='hidden'
+              onChange={handleSetImage}
+            />
+            <div className={classes.imageContainer}>
+              <Typography variant='body1'>
+                Nombre: {imageAsFile.name}
+              </Typography>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleImageChange}
+              >
+                Elegir imagen
+              </Button>
+            </div>
           </form>
         </DialogContent>
         <DialogActions>
