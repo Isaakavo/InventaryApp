@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/analytics';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 let firebaseConfig = {
   apiKey: 'AIzaSyCKliMjRqa5T6BVoQnohHU8jfFX0nb-eQI',
@@ -21,3 +22,5 @@ firebase.analytics();
 export const firestore = fb.firestore();
 // Initialize auth
 export const admin = fb.auth();
+// Initialize storage
+export const storage = fb.storage();
