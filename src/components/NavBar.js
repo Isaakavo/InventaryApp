@@ -15,7 +15,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 //Icons
-import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { changeDb } from '../redux/actions/dataActions';
@@ -78,7 +78,7 @@ const NavBar = ({ classes }) => {
             </Tooltip>
             <CreateExcelFile />
             <MyButton tip='Cerrar Sesión' onClick={handleLogout}>
-              <KeyboardReturn color='primary' />
+              <ExitToApp color='primary' />
             </MyButton>
           </>
         ) : (
