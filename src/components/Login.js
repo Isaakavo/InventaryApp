@@ -37,8 +37,8 @@ const Login = ({ classes, history }) => {
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
-          <Typography variant='h2' className={classes.pageTitle}>
-            Inicio de Sesión
+          <Typography variant='h5' className={classes.pageTitle}>
+            INICIO DE SESIÓN
           </Typography>
           <form noValidate onSubmit={handleSubmit}>
             <TextField

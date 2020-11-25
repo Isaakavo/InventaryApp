@@ -69,7 +69,13 @@ export const updateData = (newData, id, empresa, image) => (dispatch) => {
     .doc(id)
     .update(newData)
     .then(() => {
-      dispatch(uploadImage(image, id, empresa));
+      if (image !== '') {
+        dispatch({ type: STOP_LOADING_UI });
+        dispatch(uploadImage(image, id, empresa));
+      } else {
+        dispatch({ type: STOP_LOADING_UI });
+        dispatch(getData(empresa));
+      }
     })
 
     .catch((err) => console.log(err));
@@ -119,7 +125,6 @@ export const addData = (newItem, lastId) => (dispatch) => {
         payload: lastId,
       });
       dispatch(uploadImage(newItem.image, doc.id, newItem.empresa));
-      console.log(newItem.image.name);
     })
     .catch((err) => console.error(err));
 };
@@ -138,21 +143,16 @@ export const getUserData = (id) => (dispatch) => {
         type: SET_USER_DATA,
         payload: elements,
       });
-    });
+    })
+    .catch((err) => console.log(err));
 };
 
 export const uploadImage = (image, id, empresa) => (dispatch) => {
-  // dispatch({ type: LOADING_DATA });
-  if (image === '') {
-    console.log('Seleciona una imagen, puñetas');
-  }
   const uploadTask = storage.ref(`/${empresa}/${image.name}`).put(image);
   //initiate the firebase side uploading
   uploadTask.on(
     'state_changed',
-    (snapshot) => {
-      console.log(snapshot);
-    },
+    (snapshot) => {},
     (err) => {
       console.log(err);
     },
@@ -172,7 +172,6 @@ export const uploadImage = (image, id, empresa) => (dispatch) => {
         })
         .then(() => {
           dispatch(getData(empresa));
-          dispatch({ type: STOP_LOADING_UI });
         })
         .catch((err) => console.error(err));
     }

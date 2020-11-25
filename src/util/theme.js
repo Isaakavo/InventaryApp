@@ -62,7 +62,7 @@ const theme = {
     },
     login: {
       width: '50%',
-      margin: '10px auto',
+      margin: '215px auto',
       padding: 10,
       paddingBottom: '50px',
     },

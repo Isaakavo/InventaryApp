@@ -7,3 +7,8 @@ export const companies = [
   { value: 'material usado', label: 'Material Usado' },
   { value: 'resguardos', label: 'Resguardos' },
 ];
+
+export const almacenes = [
+  { value: 'almacen espectro', label: 'Almácen Espectro' },
+  { value: 'almace tainos', label: 'Almácen Tainos' },
+];
