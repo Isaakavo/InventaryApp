@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Row from './Row';
 import { header } from '../util/header';
 import AddItem from './AddItem';
+
+import NavBar from '../components/NavBar';
 
 // MUI
 import Paper from '@material-ui/core/Paper';
@@ -15,7 +18,6 @@ import TableRow from '@material-ui/core/TableRow';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllData, getData } from '../redux/actions/dataActions';
-import { Typography } from '@material-ui/core';
 const styles = (theme) => ({
   ...theme.spreadThis,
 });
@@ -60,6 +62,7 @@ const Table = ({ classes }) => {
   }, [dispatch]);
   return (
     <>
+      <NavBar />
       {authenticated ? (
         <Paper className={classes.root}>
           <TableContainer className={classes.tableContainer}>
@@ -89,7 +92,7 @@ const Table = ({ classes }) => {
           </TableContainer>
         </Paper>
       ) : (
-        <Typography variant='h2'>Por favor, inicie sesión</Typography>
+        <Redirect to='/' />
       )}
     </>
   );
