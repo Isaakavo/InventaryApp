@@ -5,7 +5,6 @@ import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import themeFile from './util/theme';
 //Components
-import NavBar from './components/NavBar';
 import Table from './components/Table';
 import Login from './components/Login';
 import AuthRoute from './util/AuthRoute';
@@ -40,7 +39,6 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
-          <NavBar />
           <div className='container'>
             <Switch>
               <AuthRoute exact path='/' component={Login} />
