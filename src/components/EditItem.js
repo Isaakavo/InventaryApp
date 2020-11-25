@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { companies } from '../util/companies';
+import { almacenes } from '../util/companies';
 //MUI
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -27,7 +27,7 @@ const initialValue = {
   marca: '',
   cantidad: 0,
   userHandle: '',
-  ubicacion: '',
+  ubicacion: 'almacen espectro',
   observaciones: '',
   empresa: '',
 };
@@ -40,6 +40,7 @@ const EditValue = ({ classes, row }) => {
   const [open, setOpen] = useState(false);
   const [newValue, setNewValue] = useState(initialValue);
   const [imageAsFile, setImageAsFile] = useState('');
+  const [errors, setErrors] = useState({});
 
   const imageInput = useRef();
 
@@ -56,6 +57,7 @@ const EditValue = ({ classes, row }) => {
       console.log('closing');
       setOpen(false);
       setImageAsFile('');
+      setErrors({});
     }
   };
   const handleChange = (e) => {
@@ -67,8 +69,21 @@ const EditValue = ({ classes, row }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateData(newValue, row.id, empresa, imageAsFile));
-    handleClose();
+    if (newValue.cantidad === 0 || newValue.equipo === '') {
+      if (newValue.cantidad === 0) {
+        setErrors({
+          cantidad: 'Cantidad no válida',
+        });
+      }
+      if (newValue.equipo === '') {
+        setErrors({
+          equipo: 'Debe llenar este campo',
+        });
+      }
+    } else {
+      dispatch(updateData(newValue, row.id, empresa, imageAsFile));
+      handleClose();
+    }
   };
   const handleSetImage = (e) => {
     const image = e.target.files[0];
@@ -88,7 +103,7 @@ const EditValue = ({ classes, row }) => {
       marca: row.marca ? row.marca : '',
       cantidad: row.cantidad ? row.cantidad : '',
       userHandle: row.userHandle ? row.userHandle : '',
-      ubicacion: row.ubicacion ? row.ubicacion : '',
+      ubicacion: 'almacen espectro',
       observaciones: row.observaciones ? row.observaciones : '',
       empresa: row.empresa ? row.empresa : '',
     });
@@ -124,6 +139,8 @@ const EditValue = ({ classes, row }) => {
               className={classes.textField}
               value={newValue.equipo}
               onChange={handleChange}
+              error={errors.equipo ? true : false}
+              helperText={errors.equipo}
               fullWidth
             />
             <TextField
@@ -156,19 +173,19 @@ const EditValue = ({ classes, row }) => {
               className={classes.textField}
               value={newValue.cantidad >= 0 ? newValue.cantidad : 0}
               onChange={handleChange}
+              error={errors.cantidad ? true : false}
+              helperText={errors.cantidad}
               fullWidth
             />
-            <Inputlabel id='select-empresa'>Empresa</Inputlabel>
+            <Inputlabel id='select-ubicacion'>Ubicación</Inputlabel>
             <Select
-              labelId='select-empresa'
-              id='empresa'
-              name='empresa'
-              // value={newItem.empresa}
-              value={empresa}
+              labelId='select-ubicacion'
+              id='ubicacion'
+              name='ubicacion'
+              value={newValue.ubicacion}
               onChange={handleChange}
-              // disabled={true}
             >
-              {companies.map((item) => {
+              {almacenes.map((item) => {
                 return (
                   <MenuItem key={item.value} value={item.value}>
                     {item.label}
@@ -176,16 +193,6 @@ const EditValue = ({ classes, row }) => {
                 );
               })}
             </Select>
-            <TextField
-              name='ubicacion'
-              type='text'
-              label='Ubicación'
-              placeholder={row.ubicacion}
-              className={classes.textField}
-              value={newValue.ubicacion}
-              onChange={handleChange}
-              fullWidth
-            />
             <TextField
               name='observaciones'
               type='text'
@@ -204,9 +211,7 @@ const EditValue = ({ classes, row }) => {
               onChange={handleSetImage}
             />
             <div className={classes.imageContainer}>
-              <Typography variant='body1'>
-                Nombre: {imageAsFile.name}
-              </Typography>
+              <Typography variant='body1'>{imageAsFile.name}</Typography>
               <Button
                 variant='contained'
                 color='primary'

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MyButton from '../util/MyButton';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { companies } from '../util/companies';
+import { almacenes } from '../util/companies';
 //MUI
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -26,7 +26,7 @@ let initialValue = {
   marca: '',
   cantidad: 0,
   userHandle: '',
-  ubicacion: '',
+  ubicacion: 'almacen espectro',
   observaciones: '',
   fechaIngreso: '',
   empresa: '',
@@ -46,6 +46,7 @@ const AddItem = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [newItem, setNewItem] = useState(initialValue);
   const [imageAsFile, setImageAsFile] = useState('');
+  const [errors, setErrors] = useState({});
 
   const imageInput = useRef();
 
@@ -59,9 +60,18 @@ const AddItem = ({ classes }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addData(newItem, ultimoId));
-    setOpen(false);
-    setNewItem(initialValue);
+    if (newItem.cantidad === 0 || newItem.equipo === '') {
+      setErrors({
+        cantidad: 'Cantidad no válida',
+        equipo: 'Debe llenar este campo',
+      });
+    } else {
+      dispatch(addData(newItem, ultimoId));
+      setOpen(false);
+      setNewItem(initialValue);
+      setErrors({});
+      setImageAsFile('');
+    }
   };
 
   const handleSetImage = (e) => {
@@ -77,7 +87,6 @@ const AddItem = ({ classes }) => {
     const fileInput = imageInput.current;
     fileInput.click();
   };
-  console.log(newItem);
   useEffect(() => {
     setNewItem({
       ...initialValue,
@@ -103,7 +112,7 @@ const AddItem = ({ classes }) => {
         fullWidth
         maxWidth='sm'
       >
-        <DialogTitle>Agregar elementos</DialogTitle>
+        <DialogTitle>Agregar elementos en {empresa}</DialogTitle>
         <DialogContent>
           <form>
             <TextField
@@ -124,6 +133,8 @@ const AddItem = ({ classes }) => {
               className={classes.textField}
               value={newItem.equipo}
               onChange={handleChange}
+              error={errors.equipo ? true : false}
+              helperText={errors.equipo}
               fullWidth
             />
             <TextField
@@ -156,19 +167,20 @@ const AddItem = ({ classes }) => {
               className={classes.textField}
               value={newItem.cantidad >= 0 ? newItem.cantidad : 0}
               onChange={handleChange}
+              error={errors.cantidad ? true : false}
+              helperText={errors.cantidad}
               fullWidth
             />
-            <Inputlabel id='select-empresa'>Empresa</Inputlabel>
+
+            <Inputlabel id='select-ubicacion'>Ubicación</Inputlabel>
             <Select
-              labelId='select-empresa'
-              id='empresa'
-              name='empresa'
-              // value={newItem.empresa}
-              value={empresa}
+              labelId='select-ubicacion'
+              id='ubicacion'
+              name='ubicacion'
+              value={newItem.ubicacion}
               onChange={handleChange}
-              // disabled={true}
             >
-              {companies.map((item) => {
+              {almacenes.map((item) => {
                 return (
                   <MenuItem key={item.value} value={item.value}>
                     {item.label}
@@ -176,16 +188,6 @@ const AddItem = ({ classes }) => {
                 );
               })}
             </Select>
-            <TextField
-              name='ubicacion'
-              type='text'
-              label='Ubicación'
-              placeholder='Ubicación'
-              className={classes.textField}
-              value={newItem.ubicacion}
-              onChange={handleChange}
-              fullWidth
-            />
             <TextField
               name='observaciones'
               type='text'
@@ -204,9 +206,7 @@ const AddItem = ({ classes }) => {
               onChange={handleSetImage}
             />
             <div className={classes.imageContainer}>
-              <Typography variant='body1'>
-                Nombre: {imageAsFile.name}
-              </Typography>
+              <Typography variant='body1'>{imageAsFile.name}</Typography>
               <Button
                 variant='contained'
                 color='primary'
