@@ -6,7 +6,6 @@ import {
   ITEM_ADDED,
   CHANGE_DATABASE,
   SET_LASTNUM,
-  SET_ALL_DATA,
   SET_USER_DATA,
 } from '../types';
 import { firestore } from '../../firebaseConfig';
@@ -40,29 +39,13 @@ export const getData = (inventary) => (dispatch) => {
     });
 };
 
-export const getAllData = () => (dispatch) => {
-  firestore
-    .collection('inventario')
-    .orderBy('numero')
-    .get()
-    .then((res) => {
-      const elements = [];
-      res.forEach((doc) => {
-        elements.push({ id: doc.id, ...doc.data() });
-      });
-      dispatch({
-        type: SET_ALL_DATA,
-        payload: elements,
-      });
-    })
-    .catch((err) => console.error(err));
-};
-
 export const changeDb = (DB) => (dispatch) => {
   dispatch({ type: CHANGE_DATABASE, payload: DB });
 };
 
-export const updateData = (newData, id, empresa, image) => (dispatch) => {
+export const updateData = (newData, id, empresa, image, credenciales) => (
+  dispatch
+) => {
   dispatch({ type: LOADING_UI });
   firestore
     .collection('inventario')
@@ -82,7 +65,8 @@ export const updateData = (newData, id, empresa, image) => (dispatch) => {
   const modifiedElements = {
     idDoc: id,
     fecha: new Date().toISOString(),
-    modificadoPor: 'user',
+    modificadoPor: credenciales.nickname,
+    idUsuario: credenciales.idUsuario,
   };
   firestore
     .collection('actualizacionDeElementos')

@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   loading: false,
-  errors: null,
+  errors: undefined,
 };
 // eslint-disable-next-line
 export default function (state = initialState, action) {
@@ -16,6 +16,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+        errors: null,
       };
     case STOP_LOADING_UI:
       return {
@@ -25,6 +26,7 @@ export default function (state = initialState, action) {
     case SET_ERRORS:
       return {
         ...state,
+        loading: false,
         errors: action.payload,
       };
     case CLEAR_ERRORS:

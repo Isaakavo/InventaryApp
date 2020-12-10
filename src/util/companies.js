@@ -10,5 +10,5 @@ export const companies = [
 
 export const almacenes = [
   { value: 'almacen espectro', label: 'Almácen Espectro' },
-  { value: 'almace tainos', label: 'Almácen Tainos' },
+  { value: 'almacen tainos', label: 'Almácen Tainos' },
 ];

@@ -1,10 +1,10 @@
 import {
   ITEM_ADDED,
   LOADING_DATA,
+  STOP_LOADING_DATA,
   SET_DATA,
   CHANGE_DATABASE,
   SET_LASTNUM,
-  SET_ALL_DATA,
 } from '../types';
 
 const initialState = {
@@ -21,6 +21,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+    case STOP_LOADING_DATA:
+      return {
+        ...state,
+        loading: false,
       };
     case SET_DATA:
       return {
@@ -43,11 +48,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ultimoId: action.payload,
-      };
-    case SET_ALL_DATA:
-      return {
-        ...state,
-        allData: action.payload,
       };
     default:
       return state;
