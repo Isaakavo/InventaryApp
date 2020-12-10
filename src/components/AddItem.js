@@ -123,6 +123,7 @@ const AddItem = ({ classes }) => {
               className={classes.textField}
               value={newItem.clave}
               onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -135,6 +136,7 @@ const AddItem = ({ classes }) => {
               onChange={handleChange}
               error={errors.equipo ? true : false}
               helperText={errors.equipo}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -142,11 +144,12 @@ const AddItem = ({ classes }) => {
               type='text'
               label='Caracteristicas'
               multiline
-              rows='3'
+              rows='2'
               placeholder='catacteristicas'
               className={classes.textField}
               value={newItem.caracteristicas}
               onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -157,6 +160,7 @@ const AddItem = ({ classes }) => {
               className={classes.textField}
               value={newItem.marca}
               onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -169,9 +173,21 @@ const AddItem = ({ classes }) => {
               onChange={handleChange}
               error={errors.cantidad ? true : false}
               helperText={errors.cantidad}
+              variant='outlined'
               fullWidth
             />
 
+            <TextField
+              name='observaciones'
+              type='text'
+              label='Observaciones'
+              placeholder='Observaciones'
+              className={classes.textField}
+              value={newItem.observaciones}
+              onChange={handleChange}
+              variant='outlined'
+              fullWidth
+            />
             <Inputlabel id='select-ubicacion'>Ubicación</Inputlabel>
             <Select
               labelId='select-ubicacion'
@@ -179,6 +195,8 @@ const AddItem = ({ classes }) => {
               name='ubicacion'
               value={newItem.ubicacion}
               onChange={handleChange}
+              className={classes.textField}
+              variant='outlined'
             >
               {almacenes.map((item) => {
                 return (
@@ -188,16 +206,6 @@ const AddItem = ({ classes }) => {
                 );
               })}
             </Select>
-            <TextField
-              name='observaciones'
-              type='text'
-              label='Observaciones'
-              placeholder='Observaciones'
-              className={classes.textField}
-              value={newItem.observaciones}
-              onChange={handleChange}
-              fullWidth
-            />
             <input
               type='file'
               id='imageInput'

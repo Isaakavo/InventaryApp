@@ -8,6 +8,7 @@ import AddItem from './AddItem';
 import NavBar from '../components/NavBar';
 
 // MUI
+import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import TableMUI from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -17,7 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllData, getData } from '../redux/actions/dataActions';
+import { getData } from '../redux/actions/dataActions';
 const styles = (theme) => ({
   ...theme.spreadThis,
 });
@@ -57,40 +58,44 @@ const Table = ({ classes }) => {
   useEffect(() => {
     dispatch(getData(empresa));
   }, [empresa, dispatch]);
-  useEffect(() => {
-    dispatch(getAllData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAllData());
+  // }, [dispatch]);
   return (
     <>
       <NavBar />
       {authenticated ? (
-        <Paper className={classes.root}>
-          <TableContainer className={classes.tableContainer}>
-            <TableMUI
-              stickyHeader
-              aria-label='sticky table'
-              className={classes.table}
-            >
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell />
-                  {header.map((head, index) => {
-                    return (
-                      <StyledTableCell key={index} className={classes.table}>
-                        {head.header}
-                      </StyledTableCell>
-                    );
-                  })}
-                  <StyledTableCell>
-                    {authenticated && <AddItem />}
-                  </StyledTableCell>
-                  <StyledTableCell />
-                </TableRow>
-              </TableHead>
-              {displayingRow}
-            </TableMUI>
-          </TableContainer>
-        </Paper>
+        <Container maxWidth='xl'>
+          <Paper className={classes.root}>
+            <TableContainer className={classes.tableContainer}>
+              <TableMUI
+                stickyHeader
+                aria-label='sticky table'
+                className={classes.table}
+                size='small'
+                padding='checkbox'
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell />
+                    {header.map((head, index) => {
+                      return (
+                        <StyledTableCell key={index} className={classes.table}>
+                          {head.header}
+                        </StyledTableCell>
+                      );
+                    })}
+                    <StyledTableCell>
+                      {authenticated && <AddItem />}
+                    </StyledTableCell>
+                    <StyledTableCell />
+                  </TableRow>
+                </TableHead>
+                {displayingRow}
+              </TableMUI>
+            </TableContainer>
+          </Paper>
+        </Container>
       ) : (
         <Redirect to='/' />
       )}

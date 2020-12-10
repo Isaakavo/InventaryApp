@@ -73,7 +73,7 @@ const NavBar = ({ classes }) => {
               </FormHelperText>
             </FormControl>
 
-            <Tooltip title={`Sesión iniciada con ${credentials.email}`}>
+            <Tooltip title={credentials.email}>
               <Avatar>{credentials.letra}</Avatar>
             </Tooltip>
             <CreateExcelFile />

@@ -34,6 +34,9 @@ const initialValue = {
 
 const styles = (theme) => ({
   ...theme.spreadThis,
+  editForm: {
+    textAlign: 'center',
+  },
 });
 
 const EditValue = ({ classes, row }) => {
@@ -46,6 +49,7 @@ const EditValue = ({ classes, row }) => {
 
   const { empresa } = useSelector((state) => state.data);
   const loading = useSelector((state) => state.UI.loading);
+  const { credentials } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -81,13 +85,12 @@ const EditValue = ({ classes, row }) => {
         });
       }
     } else {
-      dispatch(updateData(newValue, row.id, empresa, imageAsFile));
+      dispatch(updateData(newValue, row.id, empresa, imageAsFile, credentials));
       handleClose();
     }
   };
   const handleSetImage = (e) => {
     const image = e.target.files[0];
-    console.log(image);
     setImageAsFile(image);
   };
   const handleImageChange = () => {
@@ -117,8 +120,14 @@ const EditValue = ({ classes, row }) => {
       >
         <EditIcon color='primary' />
       </MyButton>
-      <Dialog open={open} onClose={() => handleClose()} fullWidth maxWidth='sm'>
-        <DialogTitle>Editar</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={() => handleClose()}
+        fullWidth
+        maxWidth='sm'
+        className={classes.editForm}
+      >
+        <DialogTitle>Editar {row.equipo}</DialogTitle>
         <DialogContent>
           <form>
             <TextField
@@ -129,6 +138,7 @@ const EditValue = ({ classes, row }) => {
               className={classes.textField}
               value={newValue.clave}
               onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -141,6 +151,7 @@ const EditValue = ({ classes, row }) => {
               onChange={handleChange}
               error={errors.equipo ? true : false}
               helperText={errors.equipo}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -148,11 +159,12 @@ const EditValue = ({ classes, row }) => {
               type='text'
               label='Caracteristicas'
               multiline
-              rows='3'
+              rows='2'
               placeholder={row.caracteristicas}
               className={classes.textField}
               value={newValue.caracteristicas}
               onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -163,6 +175,7 @@ const EditValue = ({ classes, row }) => {
               className={classes.textField}
               value={newValue.marca}
               onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <TextField
@@ -175,6 +188,19 @@ const EditValue = ({ classes, row }) => {
               onChange={handleChange}
               error={errors.cantidad ? true : false}
               helperText={errors.cantidad}
+              variant='outlined'
+              fullWidth
+            />
+
+            <TextField
+              name='observaciones'
+              type='text'
+              label='Observaciones'
+              placeholder={row.ubicaciones}
+              className={classes.textField}
+              value={newValue.observaciones}
+              onChange={handleChange}
+              variant='outlined'
               fullWidth
             />
             <Inputlabel id='select-ubicacion'>Ubicación</Inputlabel>
@@ -184,6 +210,8 @@ const EditValue = ({ classes, row }) => {
               name='ubicacion'
               value={newValue.ubicacion}
               onChange={handleChange}
+              className={classes.textField}
+              variant='outlined'
             >
               {almacenes.map((item) => {
                 return (
@@ -193,16 +221,6 @@ const EditValue = ({ classes, row }) => {
                 );
               })}
             </Select>
-            <TextField
-              name='observaciones'
-              type='text'
-              label='Observaciones'
-              placeholder={row.ubicaciones}
-              className={classes.textField}
-              value={newValue.observaciones}
-              onChange={handleChange}
-              fullWidth
-            />
             <input
               type='file'
               id='imageInput'
