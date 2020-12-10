@@ -26,16 +26,19 @@ const theme = {
       fontWeight: 'bold',
     },
     tableContainer: {
-      maxHeight: 610,
+      maxHeight: 700,
     },
     textField: {
-      margin: '8px auto 10px auto',
+      margin: '5px auto ',
+      width: '70%',
     },
     headerRow: {
       fontWeight: 'bold',
     },
     button: {
       position: 'relative',
+      width: '50%',
+      margin: '15px auto',
     },
     progress: {
       position: 'absolute',
@@ -56,15 +59,22 @@ const theme = {
     },
     form: {
       textAlign: 'center',
+      padding: '20px',
     },
     pageTitle: {
       margin: '10px auto 10px auto',
     },
     login: {
-      width: '50%',
-      margin: '215px auto',
-      padding: 10,
-      paddingBottom: '50px',
+      // width: '30%',
+      margin: '150px auto',
+      padding: '8px',
+      paddingTop: '10px',
+      paddingBottom: '20px',
+      textAlign: 'center',
+    },
+    loginForm: {
+      display: 'flex',
+      flexDirection: 'column',
     },
     imageContainer: {
       paddingTop: '10px',
