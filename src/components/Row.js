@@ -46,6 +46,30 @@ const Row = ({ row, header, classes }) => {
     }
     return <TableCell key={index}>{value}</TableCell>;
   });
+
+  const imageDisplay = () => {
+    if (row.imagen !== undefined && row.imagen !== '') {
+      return (
+        <MyButton
+          tip={row.imagen}
+          onClick={() => window.open(row.imagen)}
+          className={classes.button}
+        >
+          <Image color='primary' />
+        </MyButton>
+      );
+    } else {
+      return (
+        <MyButton
+          tip='No se encontró una imagen'
+          disabled={true}
+          className={classes.button}
+        >
+          <Image color='disabled' />
+        </MyButton>
+      );
+    }
+  };
   return (
     <>
       <TableRow>
@@ -63,25 +87,7 @@ const Row = ({ row, header, classes }) => {
           return <TableCell key={index}>{value}</TableCell>;
         })}
         <TableCell>{authenticated && <Editvalue row={row} />}</TableCell>
-        <TableCell>
-          {row.imagen !== undefined ? (
-            <MyButton
-              tip={row.imagen}
-              onClick={() => window.open(row.imagen)}
-              className={classes.button}
-            >
-              <Image color='primary' />
-            </MyButton>
-          ) : (
-            <MyButton
-              tip='No se encontró una imagen'
-              disabled={true}
-              className={classes.button}
-            >
-              <Image color='disabled' />
-            </MyButton>
-          )}
-        </TableCell>
+        <TableCell>{imageDisplay()}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
