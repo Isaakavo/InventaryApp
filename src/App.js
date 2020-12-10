@@ -8,6 +8,7 @@ import themeFile from './util/theme';
 import Table from './components/Table';
 import Login from './components/Login';
 import AuthRoute from './util/AuthRoute';
+import Signup from './components/Signup';
 //Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -43,6 +44,7 @@ function App() {
             <Switch>
               <AuthRoute exact path='/' component={Login} />
               <Route exact path='/inventario' component={Table} />
+              <Route exact path='/crear-cuenta' component={Signup} />
             </Switch>
           </div>
         </Router>
