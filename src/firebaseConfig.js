@@ -24,3 +24,5 @@ export const firestore = fb.firestore();
 export const admin = fb.auth();
 // Initialize storage
 export const storage = fb.storage();
+
+export const SESSION = firebase.auth.Auth.Persistence.SESSION;
