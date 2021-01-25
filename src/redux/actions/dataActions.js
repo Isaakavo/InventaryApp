@@ -7,6 +7,8 @@ import {
   CHANGE_DATABASE,
   SET_LASTNUM,
   SET_USER_DATA,
+  UPDATE_DATA,
+  DELETE_DATA,
 } from '../types';
 import { firestore } from '../../firebaseConfig';
 import { storage } from '../../firebaseConfig';
@@ -43,9 +45,19 @@ export const changeDb = (DB) => (dispatch) => {
   dispatch({ type: CHANGE_DATABASE, payload: DB });
 };
 
-export const updateData = (newData, id, empresa, image, credenciales) => (
-  dispatch
-) => {
+export const updateData = (
+  newData,
+  oldValue,
+  id,
+  empresa,
+  image,
+  credenciales
+) => (dispatch) => {
+  const newValues = {
+    id: id,
+    ...newData,
+  };
+  console.log(newData);
   dispatch({ type: LOADING_UI });
   firestore
     .collection('inventario')
@@ -56,23 +68,80 @@ export const updateData = (newData, id, empresa, image, credenciales) => (
         dispatch({ type: STOP_LOADING_UI });
         dispatch(uploadImage(image, id, empresa));
       } else {
-        dispatch({ type: STOP_LOADING_UI });
-        dispatch(getData(empresa));
+        dispatch({ type: UPDATE_DATA, payload: newValues });
       }
     })
-
     .catch((err) => console.log(err));
+
+  let newValue = compareValue(newValues, oldValue);
+
   const modifiedElements = {
     idDoc: id,
     fecha: new Date().toISOString(),
     modificadoPor: credenciales.nickname,
     idUsuario: credenciales.idUsuario,
+    elementModif: newValue,
   };
   firestore
     .collection('actualizacionDeElementos')
     .add(modifiedElements)
     .then(() => {})
     .catch((err) => console.error(err));
+  dispatch({ type: STOP_LOADING_UI });
+};
+
+const compareValue = (obj1, obj2) => {
+  let value = {};
+  if (obj1.clave !== obj2.clave) {
+    value = {
+      ...value,
+      claveOld: obj2.clave,
+      claveNew: obj1.clave,
+    };
+  }
+  if (obj1.equipo !== obj2.equipo) {
+    value = {
+      ...value,
+      equipoOld: obj2.equipo,
+      equipoNew: obj1.equipo,
+    };
+  }
+  if (obj1.caracteristicas !== obj2.caracteristicas) {
+    value = {
+      ...value,
+      caracteristicasOld: obj2.caracteristicas,
+      caracteristicasNew: obj1.caracteristicas,
+    };
+  }
+  if (obj1.marca !== obj2.marca) {
+    value = {
+      ...value,
+      marcaOld: obj2.marca,
+      marcaNew: obj1.marca,
+    };
+  }
+  if (obj1.cantidad !== obj2.cantidad) {
+    value = {
+      ...value,
+      cantidadOld: obj2.cantidad,
+      cantidadNew: obj1.cantidad,
+    };
+  }
+  if (obj1.observaciones !== obj2.observaciones) {
+    value = {
+      ...value,
+      observacionesOld: obj2.observaciones,
+      observacionesNew: obj1.observaciones,
+    };
+  }
+  if (obj1.ubicacion !== obj2.ubicacion) {
+    value = {
+      ...value,
+      ubicacionOld: obj2.ubicacion,
+      ubicacionNew: obj1.ubicacion,
+    };
+  }
+  return value;
 };
 
 export const addData = (newItem, lastId) => (dispatch) => {
@@ -111,6 +180,30 @@ export const addData = (newItem, lastId) => (dispatch) => {
       dispatch(uploadImage(newItem.image, doc.id, newItem.empresa));
     })
     .catch((err) => console.error(err));
+};
+export const deleteData = (item, numero, ultimoid) => (dispatch) => {
+  // dispatch({ type: LOADING_DATA });
+  let valueToDelete = item.find((index) => index.numero === numero);
+  let idToChange = item.filter((index) => index.numero > numero);
+  console.log(idToChange);
+  firestore
+    .collection('inventario')
+    .doc(valueToDelete.id)
+    .delete()
+    .then((res) => {
+      idToChange.forEach((el) => {
+        let numberToChange = el.numero - 1;
+        firestore.collection('inventario').doc(el.id).update({
+          numero: numberToChange,
+        });
+      });
+      dispatch({ type: SET_LASTNUM, payload: ultimoid - 1 });
+      dispatch({
+        type: DELETE_DATA,
+        payload: valueToDelete.numero,
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 export const getUserData = (id) => (dispatch) => {
@@ -154,9 +247,9 @@ export const uploadImage = (image, id, empresa) => (dispatch) => {
             })
             .catch((err) => console.log(err));
         })
-        .then(() => {
-          dispatch(getData(empresa));
-        })
+        // .then(() => {
+        //   dispatch(getData(empresa));
+        // })
         .catch((err) => console.error(err));
     }
   );

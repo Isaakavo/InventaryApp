@@ -3,15 +3,17 @@ import {
   LOADING_DATA,
   STOP_LOADING_DATA,
   SET_DATA,
+  DELETE_DATA,
   CHANGE_DATABASE,
   SET_LASTNUM,
+  UPDATE_DATA,
 } from '../types';
 
 const initialState = {
   data: [],
   allData: [],
   loading: false,
-  empresa: 'espectro',
+  empresa: 'prueba',
   ultimoId: 0,
 };
 // eslint-disable-next-line
@@ -33,6 +35,30 @@ export default function (state = initialState, action) {
         data: action.payload,
         loading: false,
       };
+    case DELETE_DATA:
+      state.data = state.data.filter(
+        (index) => index.numero !== action.payload
+      );
+      state.data.map((elem) => {
+        if (elem.numero > action.payload) {
+          elem.numero -= 1;
+        }
+      });
+      return {
+        ...state,
+      };
+    case UPDATE_DATA:
+      let index = state.data.findIndex(
+        (element) => element.id === action.payload.id
+      );
+      state.data[index] = action.payload;
+      if (state.data.id === action.payload.id) {
+        state.data = action.payload;
+      }
+      return {
+        ...state,
+      };
+
     case ITEM_ADDED:
       return {
         ...state,
