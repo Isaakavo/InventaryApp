@@ -4,8 +4,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Row from './Row';
 import { header } from '../util/header';
 import AddItem from './AddItem';
-
 import NavBar from '../components/NavBar';
+import MyButton from '../util/MyButton';
 
 // MUI
 import Container from '@material-ui/core/Container';
@@ -16,11 +16,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+//Icons
+import Refresh from '@material-ui/icons/Refresh';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getData } from '../redux/actions/dataActions';
 const styles = (theme) => ({
   ...theme.spreadThis,
+  buttonAdd: {
+    color: theme.palette.common.white,
+  },
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -88,7 +93,16 @@ const Table = ({ classes }) => {
                     <StyledTableCell>
                       {authenticated && <AddItem />}
                     </StyledTableCell>
-                    <StyledTableCell />
+                    <StyledTableCell>
+                      <MyButton
+                        tip='Refrescar Tabla'
+                        onClick={() => dispatch(getData(empresa))}
+                        btnClassName={classes.buttonAdd}
+                        disabled={loading}
+                      >
+                        <Refresh />
+                      </MyButton>
+                    </StyledTableCell>
                   </TableRow>
                 </TableHead>
                 {displayingRow}

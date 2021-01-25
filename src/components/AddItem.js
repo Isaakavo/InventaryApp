@@ -41,6 +41,7 @@ const styles = (theme) => ({
 
 const AddItem = ({ classes }) => {
   const { loading, empresa, ultimoId } = useSelector((state) => state.data);
+  const { credentials } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -55,6 +56,12 @@ const AddItem = ({ classes }) => {
       ...newItem,
       // empresa: empresa,
       [e.target.name]: e.target.value,
+    });
+  };
+  const hangleNumberChange = (e) => {
+    setNewItem({
+      ...newItem,
+      [e.target.name]: parseInt(e.target.value),
     });
   };
 
@@ -91,18 +98,20 @@ const AddItem = ({ classes }) => {
     setNewItem({
       ...initialValue,
       empresa: empresa,
+      numero: ultimoId + 1,
     });
     initialValue = {
       ...initialValue,
       empresa: empresa,
     };
-  }, [empresa]);
+  }, [empresa, ultimoId]);
   return (
     <>
       <MyButton
         tip='Agregar un nuevo elemento al inventario'
         onClick={() => setOpen(true)}
         btnClassName={classes.buttonAdd}
+        disabled={loading}
       >
         <AddIcon />
       </MyButton>
@@ -115,6 +124,18 @@ const AddItem = ({ classes }) => {
         <DialogTitle>Agregar elementos en {empresa}</DialogTitle>
         <DialogContent>
           <form>
+            <TextField
+              name='numero'
+              type='number'
+              label='Numero'
+              placeholder='Numero'
+              className={classes.textField}
+              value={newItem.numero}
+              disabled={!credentials.admin}
+              onChange={hangleNumberChange}
+              variant='outlined'
+              fullWidth
+            />
             <TextField
               name='clave'
               type='text'
@@ -145,7 +166,7 @@ const AddItem = ({ classes }) => {
               label='Caracteristicas'
               multiline
               rows='2'
-              placeholder='catacteristicas'
+              placeholder='Caracteristicas'
               className={classes.textField}
               value={newItem.caracteristicas}
               onChange={handleChange}

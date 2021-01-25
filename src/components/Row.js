@@ -87,6 +87,7 @@ const Row = ({ row, header, classes }) => {
           return <TableCell key={index}>{value}</TableCell>;
         })}
         <TableCell>{authenticated && <Editvalue row={row} />}</TableCell>
+        {/* <TableCell>{authenticated && <DeleteItem />}</TableCell> */}
         <TableCell>{imageDisplay()}</TableCell>
       </TableRow>
       <TableRow>

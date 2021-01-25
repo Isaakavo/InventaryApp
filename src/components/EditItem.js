@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MyButton from '../util/MyButton';
+import DeleteItem from './DeleteItem';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { almacenes } from '../util/companies';
 //MUI
@@ -34,14 +35,12 @@ const initialValue = {
 
 const styles = (theme) => ({
   ...theme.spreadThis,
-  editForm: {
-    textAlign: 'center',
-  },
 });
 
 const EditValue = ({ classes, row }) => {
   const [open, setOpen] = useState(false);
   const [newValue, setNewValue] = useState(initialValue);
+  const [oldValue, setOldValue] = useState({});
   const [imageAsFile, setImageAsFile] = useState('');
   const [errors, setErrors] = useState({});
 
@@ -58,7 +57,6 @@ const EditValue = ({ classes, row }) => {
   };
   const handleClose = () => {
     if (!loading) {
-      console.log('closing');
       setOpen(false);
       setImageAsFile('');
       setErrors({});
@@ -68,6 +66,13 @@ const EditValue = ({ classes, row }) => {
     setNewValue({
       ...newValue,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const hangleNumberChange = (e) => {
+    setNewValue({
+      ...newValue,
+      [e.target.name]: parseInt(e.target.value),
     });
   };
 
@@ -85,7 +90,16 @@ const EditValue = ({ classes, row }) => {
         });
       }
     } else {
-      dispatch(updateData(newValue, row.id, empresa, imageAsFile, credentials));
+      dispatch(
+        updateData(
+          newValue,
+          oldValue,
+          row.id,
+          empresa,
+          imageAsFile,
+          credentials
+        )
+      );
       handleClose();
     }
   };
@@ -100,6 +114,20 @@ const EditValue = ({ classes, row }) => {
 
   useEffect(() => {
     setNewValue({
+      numero: row.numero,
+      clave: row.clave ? row.clave : '',
+      equipo: row.equipo ? row.equipo : '',
+      caracteristicas: row.caracteristicas ? row.caracteristicas : '',
+      marca: row.marca ? row.marca : '',
+      cantidad: row.cantidad ? row.cantidad : '',
+      userHandle: row.userHandle ? row.userHandle : '',
+      ubicacion: 'almacen espectro',
+      observaciones: row.observaciones ? row.observaciones : '',
+      empresa: row.empresa ? row.empresa : '',
+    });
+    setOldValue({
+      id: row.id,
+      numero: row.numero,
       clave: row.clave ? row.clave : '',
       equipo: row.equipo ? row.equipo : '',
       caracteristicas: row.caracteristicas ? row.caracteristicas : '',
@@ -120,16 +148,22 @@ const EditValue = ({ classes, row }) => {
       >
         <EditIcon color='primary' />
       </MyButton>
-      <Dialog
-        open={open}
-        onClose={() => handleClose()}
-        fullWidth
-        maxWidth='sm'
-        className={classes.editForm}
-      >
+      <Dialog open={open} onClose={() => handleClose()} fullWidth maxWidth='sm'>
         <DialogTitle>Editar {row.equipo}</DialogTitle>
         <DialogContent>
           <form>
+            <TextField
+              name='numero'
+              type='number'
+              label='Numero'
+              placeholder={row.numero}
+              className={classes.textField}
+              value={newValue.numero}
+              onChange={hangleNumberChange}
+              disabled={!credentials.admin}
+              variant='outlined'
+              fullWidth
+            />
             <TextField
               name='clave'
               type='text'
@@ -241,7 +275,8 @@ const EditValue = ({ classes, row }) => {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary'>
+          <DeleteItem numero={oldValue.numero} handleClose={handleClose} />
+          <Button onClick={handleClose} color='primary' variant='outlined'>
             Cancelar
           </Button>
           <Button

@@ -17,7 +17,6 @@ export const loginUser = (email, password, history) => (dispatch) => {
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         dispatch(getUserData(user.user.uid));
-        console.log(user.user.uid);
         history.push('/');
         dispatch({ type: CLEAR_ERRORS });
       })

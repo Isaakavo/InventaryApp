@@ -73,7 +73,7 @@ const NavBar = ({ classes }) => {
               </FormHelperText>
             </FormControl>
 
-            <Tooltip title={credentials.email}>
+            <Tooltip title={credentials.email ? credentials.email : ''}>
               <Avatar>{credentials.letra}</Avatar>
             </Tooltip>
             <CreateExcelFile />
