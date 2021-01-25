@@ -30,7 +30,7 @@ const theme = {
     },
     textField: {
       margin: '5px auto ',
-      width: '70%',
+      width: '100%',
     },
     headerRow: {
       fontWeight: 'bold',
@@ -39,6 +39,10 @@ const theme = {
       position: 'relative',
       width: '50%',
       margin: '15px auto',
+    },
+    buttonDelete: {
+      margin: 'auto',
+      marginLeft: 'inherit',
     },
     progress: {
       position: 'absolute',
