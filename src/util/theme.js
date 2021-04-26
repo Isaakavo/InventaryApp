@@ -25,8 +25,12 @@ const theme = {
       minWidth: 100,
       fontWeight: 'bold',
     },
+    exitTable: {
+      minWidth: 200,
+      fontWeight: 'bold',
+    },
     tableContainer: {
-      maxHeight: 700,
+      maxHeight: 1000,
     },
     textField: {
       margin: '5px auto ',

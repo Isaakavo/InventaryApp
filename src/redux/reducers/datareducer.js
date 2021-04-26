@@ -3,17 +3,19 @@ import {
   LOADING_DATA,
   STOP_LOADING_DATA,
   SET_DATA,
+  EXIT_ADDED,
   DELETE_DATA,
   CHANGE_DATABASE,
   SET_LASTNUM,
   UPDATE_DATA,
+  SET_EXITS,
 } from '../types';
 
 const initialState = {
   data: [],
-  allData: [],
+  exits: [],
   loading: false,
-  empresa: 'prueba',
+  empresa: 'salidas',
   ultimoId: 0,
 };
 // eslint-disable-next-line
@@ -35,11 +37,17 @@ export default function (state = initialState, action) {
         data: action.payload,
         loading: false,
       };
+    case SET_EXITS:
+      return {
+        ...state,
+        exits: action.payload,
+        loading: false,
+      };
     case DELETE_DATA:
       state.data = state.data.filter(
         (index) => index.numero !== action.payload
       );
-      state.data.map((elem) => {
+      state.data.forEach((elem) => {
         if (elem.numero > action.payload) {
           elem.numero -= 1;
         }
@@ -65,6 +73,12 @@ export default function (state = initialState, action) {
         data: [...state.data, action.payload],
         loading: false,
       };
+    case EXIT_ADDED:
+      return {
+        ...state,
+        exits: [...state.exits, action.payload],
+        loading: false,
+      };
     case CHANGE_DATABASE:
       return {
         ...state,
@@ -75,6 +89,7 @@ export default function (state = initialState, action) {
         ...state,
         ultimoId: action.payload,
       };
+
     default:
       return state;
   }

@@ -1,5 +1,6 @@
 import {
   SET_DATA,
+  SET_EXITS,
   LOADING_UI,
   STOP_LOADING_UI,
   LOADING_DATA,
@@ -9,6 +10,7 @@ import {
   SET_USER_DATA,
   UPDATE_DATA,
   DELETE_DATA,
+  EXIT_ADDED,
 } from '../types';
 import { firestore } from '../../firebaseConfig';
 import { storage } from '../../firebaseConfig';
@@ -35,6 +37,49 @@ export const getData = (inventary) => (dispatch) => {
         type: SET_LASTNUM,
         payload: lastIndex,
       });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+export const getExits = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+
+  firestore
+    .collection('salidas')
+    .orderBy('numeroSalida')
+    .get()
+    .then((res) => {
+      let lastIndex;
+      const elements = [];
+      res.forEach((doc) => {
+        lastIndex = doc.data().numeroSalida;
+        elements.push({ id: doc.id, ...doc.data() });
+        dispatch({
+          type: SET_EXITS,
+          payload: elements,
+        });
+        dispatch({
+          type: SET_LASTNUM,
+          payload: lastIndex,
+        });
+        // firestore
+        //   .collection('inventario')
+        //   .doc(doc.data().idEquipo)
+        //   .get()
+        //   .then((response) => {
+        //     elements.push({ id: doc.id, ...doc.data(), ...response.data() });
+        //     dispatch({
+        //       type: SET_EXITS,
+        //       payload: elements,
+        //     });
+        //     dispatch({
+        //       type: SET_LASTNUM,
+        //       payload: lastIndex,
+        //     });
+        //   });
+      });
+      console.log(elements);
     })
     .catch((err) => {
       console.error(err);
@@ -181,6 +226,29 @@ export const addData = (newItem, lastId) => (dispatch) => {
     })
     .catch((err) => console.error(err));
 };
+
+export const addExitData = (newExit, lastId) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  lastId++;
+  firestore
+    .collection('salidas')
+    .add(newExit)
+    .then((doc) => {
+      const resData = newExit;
+      resData.id = doc.id;
+      resData.numero = lastId;
+      dispatch({
+        type: EXIT_ADDED,
+        payload: resData,
+      });
+      dispatch({
+        type: SET_LASTNUM,
+        payload: lastId,
+      });
+    })
+    .catch((err) => console.error(err));
+};
+
 export const deleteData = (item, numero, ultimoid) => (dispatch) => {
   // dispatch({ type: LOADING_DATA });
   let valueToDelete = item.find((index) => index.numero === numero);
@@ -247,9 +315,6 @@ export const uploadImage = (image, id, empresa) => (dispatch) => {
             })
             .catch((err) => console.log(err));
         })
-        // .then(() => {
-        //   dispatch(getData(empresa));
-        // })
         .catch((err) => console.error(err));
     }
   );

@@ -54,7 +54,6 @@ const AddItem = ({ classes }) => {
   const handleChange = (e) => {
     setNewItem({
       ...newItem,
-      // empresa: empresa,
       [e.target.name]: e.target.value,
     });
   };
@@ -257,9 +256,6 @@ const AddItem = ({ classes }) => {
             disabled={loading}
           >
             Subir
-            {/* {loading && (
-              <CircularProgress size={30} className={classes.progressSpiner} />
-            )} */}
           </Button>
         </DialogActions>
       </Dialog>

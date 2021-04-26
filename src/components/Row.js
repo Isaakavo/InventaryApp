@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Editvalue from './EditItem';
 import withStyles from '@material-ui/core/styles/withStyles';
 import dayjs from 'dayjs';
-import { innerHeader } from '../util/header';
+import { innerHeader, exitInnerHeader } from '../util/header';
 //MUI
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
@@ -28,28 +28,69 @@ const styles = (theme) => ({
 const Row = ({ row, header, classes }) => {
   const [open, setOpen] = useState(false);
 
+  const { empresa } = useSelector((state) => state.data);
   const { authenticated } = useSelector((state) => state.user);
 
-  const tableHead = innerHeader.map((head) => {
-    return (
-      <TableCell key={head.key} className={classes.headerRow}>
-        {head.header}
-      </TableCell>
-    );
-  });
-  const tableBody = innerHeader.map((head, index) => {
-    let value;
-    if (head.key === 'fechaIngreso') {
-      value = dayjs(row[head.key]).format('DD/MM/YYYY');
-    } else {
-      value = row[head.key];
-    }
-    return <TableCell key={index}>{value}</TableCell>;
-  });
+  const tableHead =
+    empresa !== 'salidas'
+      ? innerHeader.map((head) => {
+          return (
+            <TableCell key={head.key} className={classes.headerRow}>
+              {head.header}
+            </TableCell>
+          );
+        })
+      : exitInnerHeader.map((head) => {
+          return (
+            <TableCell key={head.key} className={classes.headerRow}>
+              {head.header}
+            </TableCell>
+          );
+        });
+  const tableBody =
+    empresa !== 'salidas'
+      ? innerHeader.map((head, index) => {
+          let value;
+          if (head.key === 'fechaIngreso') {
+            value = dayjs(row[head.key]).format('DD/MM/YYYY');
+          } else {
+            value = row[head.key];
+          }
+          return (
+            <TableCell component='th' scope='row' key={index}>
+              {value}
+            </TableCell>
+          );
+        })
+      : exitInnerHeader.map((head, index) => {
+          let value = row[head.key];
+          return (
+            <TableCell scope='row' key={index}>
+              {value}
+            </TableCell>
+          );
+        });
+
+  const cells =
+    empresa !== 'salidas'
+      ? header.map((head, index) => {
+          const value = row[head.key];
+          return <TableCell key={index}>{value}</TableCell>;
+        })
+      : header.map((head, index) => {
+          let value = row[head.key];
+          if (head.key === 'fechaIngreso' || head.key === 'fechaSalida') {
+            if (row[head.key] !== '')
+              value = dayjs(row[head.key]).format('DD/MM/YYYY');
+          } else {
+            value = row[head.key];
+          }
+          return <TableCell key={index}>{value}</TableCell>;
+        });
 
   const imageDisplay = () => {
-    if (row.imagen !== undefined && row.imagen !== '') {
-      return (
+    empresa !== 'salidas' ? (
+      row.imagen !== undefined && row.imagen !== '' ? (
         <MyButton
           tip={row.imagen}
           onClick={() => window.open(row.imagen)}
@@ -57,9 +98,7 @@ const Row = ({ row, header, classes }) => {
         >
           <Image color='primary' />
         </MyButton>
-      );
-    } else {
-      return (
+      ) : (
         <MyButton
           tip='No se encontró una imagen'
           disabled={true}
@@ -67,9 +106,34 @@ const Row = ({ row, header, classes }) => {
         >
           <Image color='disabled' />
         </MyButton>
-      );
-    }
+      )
+    ) : (
+      <></>
+    );
+
+    // if (row.imagen !== undefined && row.imagen !== '') {
+    //   return (
+    //     <MyButton
+    //       tip={row.imagen}
+    //       onClick={() => window.open(row.imagen)}
+    //       className={classes.button}
+    //     >
+    //       <Image color='primary' />
+    //     </MyButton>
+    //   );
+    // } else {
+    //   return (
+    //     <MyButton
+    //       tip='No se encontró una imagen'
+    //       disabled={true}
+    //       className={classes.button}
+    //     >
+    //       <Image color='disabled' />
+    //     </MyButton>
+    //   );
+    // }
   };
+
   return (
     <>
       <TableRow>
@@ -82,12 +146,8 @@ const Row = ({ row, header, classes }) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        {header.map((head, index) => {
-          const value = row[head.key];
-          return <TableCell key={index}>{value}</TableCell>;
-        })}
+        {cells}
         <TableCell>{authenticated && <Editvalue row={row} />}</TableCell>
-        {/* <TableCell>{authenticated && <DeleteItem />}</TableCell> */}
         <TableCell>{imageDisplay()}</TableCell>
       </TableRow>
       <TableRow>
@@ -97,7 +157,7 @@ const Row = ({ row, header, classes }) => {
               <Typography variant='h6' gutterBottom component='div'>
                 Detalles
               </Typography>
-              <Table size='small' aria-label='detalles'>
+              <Table size='medium' aria-label='detalles'>
                 <TableHead>
                   <TableRow>{tableHead}</TableRow>
                 </TableHead>

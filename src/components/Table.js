@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Row from './Row';
-import { header } from '../util/header';
+import { header, exitHeader } from '../util/header';
 import AddItem from './AddItem';
+import AddExitItem from './AddExitItem';
 import NavBar from '../components/NavBar';
 import MyButton from '../util/MyButton';
 
@@ -20,7 +21,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Refresh from '@material-ui/icons/Refresh';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getData } from '../redux/actions/dataActions';
+import { getData, getExits } from '../redux/actions/dataActions';
 const styles = (theme) => ({
   ...theme.spreadThis,
   buttonAdd: {
@@ -39,7 +40,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const Table = ({ classes }) => {
-  const { data, loading, empresa } = useSelector((state) => state.data);
+  const { data, exits, loading, empresa } = useSelector((state) => state.data);
 
   const dispatch = useDispatch();
 
@@ -48,9 +49,13 @@ const Table = ({ classes }) => {
   const displayingRow =
     !loading && authenticated ? (
       <TableBody>
-        {data.map((row, index) => {
-          return <Row key={index} row={row} header={header} />;
-        })}
+        {empresa !== 'salidas'
+          ? data.map((row, index) => {
+              return <Row key={index} row={row} header={header} />;
+            })
+          : exits.map((row, index) => {
+              return <Row key={index} row={row} header={exitHeader} />;
+            })}
       </TableBody>
     ) : (
       <TableBody>
@@ -61,11 +66,12 @@ const Table = ({ classes }) => {
     );
 
   useEffect(() => {
-    dispatch(getData(empresa));
+    if (empresa !== 'salidas') {
+      dispatch(getData(empresa));
+    } else {
+      dispatch(getExits());
+    }
   }, [empresa, dispatch]);
-  // useEffect(() => {
-  //   dispatch(getAllData());
-  // }, [dispatch]);
   return (
     <>
       <NavBar />
@@ -76,22 +82,40 @@ const Table = ({ classes }) => {
               <TableMUI
                 stickyHeader
                 aria-label='sticky table'
-                className={classes.table}
+                className={classes.exitTable}
                 size='small'
                 padding='checkbox'
               >
                 <TableHead>
                   <TableRow>
                     <StyledTableCell />
-                    {header.map((head, index) => {
-                      return (
-                        <StyledTableCell key={index} className={classes.table}>
-                          {head.header}
-                        </StyledTableCell>
-                      );
-                    })}
+                    {empresa !== 'salidas'
+                      ? header.map((head, index) => {
+                          return (
+                            <StyledTableCell
+                              key={index}
+                              className={classes.table}
+                            >
+                              {head.header}
+                            </StyledTableCell>
+                          );
+                        })
+                      : exitHeader.map((head, index) => {
+                          return (
+                            <StyledTableCell
+                              key={index}
+                              className={classes.table}
+                            >
+                              {head.header}
+                            </StyledTableCell>
+                          );
+                        })}
                     <StyledTableCell>
-                      {authenticated && <AddItem />}
+                      {authenticated && empresa !== 'salidas' ? (
+                        <AddItem />
+                      ) : (
+                        <AddExitItem />
+                      )}
                     </StyledTableCell>
                     <StyledTableCell>
                       <MyButton

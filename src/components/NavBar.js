@@ -35,7 +35,9 @@ const styles = (theme) => ({
 });
 
 const NavBar = ({ classes }) => {
-  const [empresa, setEmpresa] = useState('espectro');
+  const state = useSelector((state) => state.data.empresa);
+
+  const [empresa, setEmpresa] = useState(state);
 
   const dispatch = useDispatch();
   const { authenticated, credentials } = useSelector((state) => state.user);

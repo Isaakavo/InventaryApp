@@ -7,6 +7,7 @@ export const companies = [
   { value: 'tainos', label: 'Tainos' },
   { value: 'material usado', label: 'Material Usado' },
   { value: 'resguardos', label: 'Resguardos' },
+  { value: 'salidas', label: 'Salidas' },
 ];
 
 export const almacenes = [

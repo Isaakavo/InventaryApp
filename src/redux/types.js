@@ -7,6 +7,8 @@ export const STOP_LOADING_DATA = 'STOP_LOADING_DATA';
 export const STOP_LOADING_UI = 'STOP_LOADING_UI';
 //DATA reducer types
 export const SET_DATA = 'SET_DATA';
+export const SET_EXITS = 'SET_EXITS';
+export const EXIT_ADDED = 'EXIT_ADDED';
 export const DELETE_DATA = 'DELETE_DATA';
 export const ITEM_ADDED = 'ITEM_ADDED';
 export const CHANGE_DATABASE = 'CHANGE_DATABASE';
